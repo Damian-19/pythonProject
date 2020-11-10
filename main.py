@@ -26,7 +26,7 @@ def open_log():
                     text_area.insert(tk.END, line)
                     text_area.insert(tk.END, '\n\n===Log File End===\n\n')
                     text_area.see(tk.END)
-            except:
+            except IOError:
                 print("[ERROR]: Log file is closed.\n")
                 text_area.insert(tk.END, "[ERROR]: Log file is closed.\n")
 
