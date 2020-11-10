@@ -1,14 +1,17 @@
 import time
+import os
 import tkinter as tk
 from tkinter import scrolledtext
 
 global text_area
 
 
+# function to return current time
 def timestamp():
     return time.strftime('%x %X')
 
 
+# function to close window
 def quit_app():
     print('quit')
     root.destroy()
@@ -16,19 +19,11 @@ def quit_app():
 
 def open_log():
     with open("log_file.txt", 'r') as file:
-        if file.closed:
-            print("[ERROR]: Log file is closed.\n")
-            text_area.insert(tk.END, "[ERROR]: Log file is closed.\n")
-        else:
-            try:
-                for line in file:
-                    text_area.insert(tk.END, '\n\n===Log File Start===\n\n')
-                    text_area.insert(tk.END, line)
-                    text_area.insert(tk.END, '\n\n===Log File End===\n\n')
-                    text_area.see(tk.END)
-            except IOError:
-                print("[ERROR]: Log file is closed.\n")
-                text_area.insert(tk.END, "[ERROR]: Log file is closed.\n")
+        text_area.insert(tk.END, '\n\n===Log File Start===\n\n')
+        for line in file:
+            text_area.insert(tk.END, line)
+        text_area.insert(tk.END, '\n\n===Log File End===\n\n')
+    text_area.see(tk.END)
 
 
 def widgets():
@@ -55,6 +50,8 @@ def widgets():
 
     text_area.grid(column=0, row=2, padx=10, pady=10, columnspan=2)
     text_area.focus()
+    with open("log_file.txt", 'a+') as log_file:
+        log_file.write("[INFO] %s : widgets created\n" % timestamp())
 
 
 def window_geometry():
@@ -73,9 +70,15 @@ def window_geometry():
     root_geometry = str(window_width) + 'x' + str(window_height) + \
         '+' + str(window_x_pos) + '+' + str(window_y_pos)
     root.geometry(root_geometry)
+    with open("log_file.txt", 'a+') as log_file:
+        log_file.write("[INFO] %s : window geometry complete.\n" % timestamp())
 
 
 def main():
+    if os.path.exists("log_file.txt"):
+        os.remove("log_file.txt")
+    else:
+        print("The file does not exist")
     print('main')
 
     root.title('Project')
@@ -83,14 +86,14 @@ def main():
     root.config(bg='grey')
     window_geometry()
     widgets()
+    with open("log_file.txt", 'a+') as log_file:
+        log_file.write("[INFO] %s : window created.\n" % timestamp())
 
 
 if __name__ == '__main__':
     print('start\n')
     root = tk.Tk()
     main()
-    text_area.insert(tk.END, "Log[INFO]: window created\n")
-    with open("log_file.txt", 'w') as log_file:
-        log_file.write("[INFO] %s : window created\n" % timestamp())
+    text_area.insert(tk.END, "Log[INFO]: window created.\n")
     root.mainloop()
     print('end\n')
