@@ -1,3 +1,4 @@
-[INFO] 11/10/20 17:59:06 : window geometry complete.
-[INFO] 11/10/20 17:59:06 : widgets created
-[INFO] 11/10/20 17:59:06 : window created.
+[INFO] 11/11/20 00:27:17 : window geometry complete.
+[INFO] 11/11/20 00:27:17 : widgets created
+[INFO] 11/11/20 00:27:17 : window created.
+[INFO] 11/11/20 00:27:31 : experiment file converted to csv
