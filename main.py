@@ -108,7 +108,7 @@ def open_log():
 ########################################################
 def window_geometry():
     # window geometry
-    screen_height = root.winfo_screenheight()
+    """screen_height = root.winfo_screenheight()
     screen_width = root.winfo_screenwidth()
     window_width = int(910)
     window_height = int(570)
@@ -121,7 +121,14 @@ def window_geometry():
     print("window width: " + str(window_width))
     root_geometry = str(window_width) + 'x' + str(window_height) + \
         '+' + str(window_x_pos) + '+' + str(window_y_pos)
-    root.geometry(root_geometry)
+    root.geometry(root_geometry)"""
+    w = root.winfo_reqwidth()
+    h = root.winfo_reqheight()
+    ws = root.winfo_screenwidth()
+    hs = root.winfo_screenheight()
+    x = (ws / 2) - (w / 2)
+    y = (hs / 2) - (h / 2)
+    root.geometry('+%d+%d' % (x, y))
 
 
 ##################################################
