@@ -1,12 +1,20 @@
 import time
 import os
+import sys
 import os.path
 import tkinter as tk
 from tkinter import ttk
 from tkinter import scrolledtext
 
 # global declarations
-global log_area, input_file, output_file, experiment_menu, right_frame
+global log_area, input_file, output_file, experiment_menu, right_frame, graph_select
+
+
+def reset():
+    root.quit()
+    window_geometry()
+    widgets()
+    root.mainloop()
 
 
 ###################################
@@ -22,6 +30,33 @@ def timestamp():
 def quit_app():
     print('quit')
     root.destroy()
+
+
+######################################
+# function to plot selected graph
+######################################
+def plot_graphs():
+    print('plotting graphs')
+    global graph_select
+    if graph_select.current() != 0:
+        log_area.insert(tk.END, '[INFO]: graph plotted\n')
+        # log
+        with open("log_file.txt", 'a+') as log_file:
+            log_file.write("[INFO] %s : graph plotted\n" % timestamp())
+    log_area.see(tk.END)
+
+
+############################################
+# function to save plotted graph
+############################################
+def save_graph():
+    print('saving')
+    if graph_select.current() != 0:
+        log_area.insert(tk.END, '[INFO]: graph saved\n')
+        # log
+        with open("log_file.txt", 'a+') as log_file:
+            log_file.write("[INFO] %s : graph saved\n" % timestamp())
+        log_area.see(tk.END)
 
 
 ###################################################################
@@ -40,6 +75,7 @@ def convert_experiment():
             # log
             with open("log_file.txt", 'a+') as log_file:
                 log_file.write("[ERROR] %s : input file could not be found\n" % timestamp())
+
     elif experiment_menu.current() == 2:  # check selected experiment
         if os.path.isfile('experiment_2.txt'):  # check file exists
             with open("experiment_2.txt", 'r') as infile:
@@ -48,33 +84,36 @@ def convert_experiment():
             with open("log_file.txt", 'a+') as log_file:
                 log_file.write("[INFO] %s : experiment file converted to csv\n" % timestamp())
         else:
-            log_area.insert(tk.END, "[ERROR] %s : input file could not be found\n" % timestamp())
+            log_area.insert(tk.END, "[ERROR]: input file could not be found\n")
             log_area.see(tk.END)
             # log
             with open("log_file.txt", 'a+') as log_file:
                 log_file.write("[ERROR] %s : input file could not be found\n" % timestamp())
 
 
-##################################################
+########################################################
 # called to display the log file in the log window
-##################################################
+########################################################
 def open_log():
     with open("log_file.txt", 'r') as file:
         log_area.insert(tk.END, '\n\n===Log File Start===\n\n')
         for line in file:
             log_area.insert(tk.END, line)
-        log_area.insert(tk.END, '\n\n===Log File End===\n\n')
+        log_area.insert(tk.END, '\n===Log File End===\n\n')
     log_area.see(tk.END)
 
 
+########################################################
+# determines window size & position on screen
+########################################################
 def window_geometry():
     # window geometry
     screen_height = root.winfo_screenheight()
     screen_width = root.winfo_screenwidth()
     window_width = int(910)
-    window_height = int(565)
+    window_height = int(570)
     window_x_pos = int(screen_width / 8)
-    window_y_pos = int(screen_height / 8)
+    window_y_pos = int(screen_height / 20)
 
     print("screen height: " + str(screen_height))
     print("screen width: " + str(screen_width))
@@ -93,17 +132,18 @@ def widgets():
     menubar = tk.Menu()
     dropdown = tk.Menu(menubar, tearoff=0)
     dropdown.add_command(label="View Log", command=open_log)
+    dropdown.add_command(label="Reset Window", command=reset)
     dropdown.add_command(label="Quit", command=quit_app)
     menubar.add_cascade(label="File", menu=dropdown)
     root.config(menu=menubar)
 
     # left_frame top
     left_frame = tk.Frame(root, bg='#e6e6e6', highlightbackground="black", highlightthickness=2)
-    left_frame.grid(column=0, row=0, padx=5, pady=5, sticky='ne')
+    left_frame.grid(column=0, row=0, padx=5, pady=5, sticky='ew')
 
     # left_frame bottom
     left_frame1 = tk.Frame(root, bg='#e6e6e6', highlightbackground="black", highlightthickness=2)
-    left_frame1.grid(column=0, row=1, padx=5, pady=5, sticky='se')
+    left_frame1.grid(column=0, row=1, padx=5, pady=5, sticky='ew')
 
     # right_frame
     global right_frame
@@ -115,19 +155,19 @@ def widgets():
 
     # input experiment file
     input_label = tk.Label(left_frame, text='Input File Text (.txt)')
-    input_label.grid(column=0, row=1, sticky='ew')
+    input_label.grid(column=0, row=2, sticky='ew')
     global input_file
     input_file = scrolledtext.ScrolledText(left_frame, wrap=tk.WORD, width=40, height=7,
                                            font='Calibri, 10', bg='black', fg='white')
-    input_file.grid(column=1, row=1, padx=10, pady=10, columnspan=2)
+    input_file.grid(column=1, row=2, padx=10, pady=10, columnspan=2)
 
     # output csv file
     output_label = tk.Label(left_frame, text='Output File Text (.csv)')
-    output_label.grid(column=0, row=2, sticky='ew')
+    output_label.grid(column=0, row=3, sticky='ew')
     global output_file
     output_file = scrolledtext.ScrolledText(left_frame, wrap=tk.WORD, width=40, height=7,
                                             font='Calibri, 10', bg='black', fg='white')
-    output_file.grid(column=1, row=2, padx=10, pady=10, columnspan=2)
+    output_file.grid(column=1, row=3, padx=10, pady=10, columnspan=2)
 
     experiment_label = tk.Label(left_frame, text='Choose Experiment')
     n = tk.StringVar()
@@ -141,21 +181,25 @@ def widgets():
     experiment_button = tk.Button(left_frame, text="Convert", command=convert_experiment)
     experiment_menu.current(0)
 
+    ttk.Separator(left_frame, orient='horizontal').grid(column=0, row=1, columnspan=3, padx=5, pady=5, sticky='ew')
+
     # left_frame grid placements
     experiment_label.grid(column=0, row=0, padx=10, pady=10, sticky='ew')
     experiment_menu.grid(column=1, row=0, padx=10, pady=10, sticky='ew')
     experiment_button.grid(column=2, row=0, padx=10, pady=10, sticky='ew')
 
+
+
     #####################################################
     # left_frame bottom widgets
 
     global log_area
-    log_area = scrolledtext.ScrolledText(left_frame1, wrap=tk.WORD, width=40, height=10,
+    log_area = scrolledtext.ScrolledText(left_frame1, wrap=tk.WORD, width=41, height=10,
                                          font=('Calibri', 12), bg='black', fg='white')
     log_label = tk.Label(left_frame1, text='Log output')
 
-    log_label.grid(column=0, row=1, sticky='ew')
-    log_area.grid(column=1, row=1, padx=10, pady=10, columnspan=2)
+    log_label.grid(column=0, row=0, padx=10, pady=1, sticky='ew')
+    log_area.grid(column=1, row=0, padx=10, pady=10, columnspan=2)
 
     #####################################################
     # right_frame widgets
@@ -165,6 +209,7 @@ def widgets():
 
     n = tk.StringVar()
     value2 = n.get()
+    global graph_select
     graph_select = ttk.Combobox(right_frame, textvariable=value2)
     graph_select['values'] = ('Select Graph Type:',
                               'Type 1',
@@ -173,11 +218,13 @@ def widgets():
     graph_select.current(0)
     graph_select.grid(column=1, row=0, padx=10, pady=10)
 
-    graph_button = tk.Button(right_frame, text='Plot Graph', command=lambda: print('plotting'))
+    graph_button = tk.Button(right_frame, text='Plot Graph', command=plot_graphs)
     graph_button.grid(column=2, row=0, padx=10, pady=10)
 
-    save_button = tk.Button(right_frame, text='Save Graph', command=lambda: print('saving'))
+    save_button = tk.Button(right_frame, text='Save Graph', command=save_graph)
     save_button.grid(column=3, row=0, padx=10, pady=10)
+
+    ttk.Separator(right_frame, orient='horizontal').grid(column=0, row=1, columnspan=4, padx=5, pady=5, sticky='ew')
 
     # log
     with open("log_file.txt", 'a+') as log_file:
