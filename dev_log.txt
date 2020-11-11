@@ -1,4 +1,5 @@
 Convert Button:
+    - Checks what dropdown item is selected
     - Will read the experiment file into the input file window
     - Does NOT convert to CSV (yet)
     - Will NOT be any text in the output file window

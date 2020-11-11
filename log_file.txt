@@ -1,2 +1,4 @@
-[INFO] 11/11/20 01:41:36 : widgets created
-[INFO] 11/11/20 01:41:36 : window created.
+[INFO] 11/11/20 12:13:55 : widgets created
+[INFO] 11/11/20 12:13:55 : window created.
+[INFO] 11/11/20 12:13:59 : experiment file converted to csv
+[ERROR] 11/11/20 12:14:00 : input file could not be found
