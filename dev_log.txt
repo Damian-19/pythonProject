@@ -1,0 +1,15 @@
+Convert Button:
+    - Will read the experiment file into the input file window
+    - Does NOT convert to CSV (yet)
+    - Will NOT be any text in the output file window
+
+File Menu:
+    - View Log will read the log file into the log window
+    - Quit works
+
+ISSUES:
+    - No window geometry
+        - Window currently just stretches to accommodate content
+        - No starting position defined
+
+    - Log frame not sticking to east side
