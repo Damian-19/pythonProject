@@ -2,6 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="979e9bb6-7f14-4e90-8f6b-8c96019d720e" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/.idea/discord.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/dev_log.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/experiment_1.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/log_file.txt" beforeDir="false" afterPath="$PROJECT_DIR$/log_file.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
@@ -11,22 +14,31 @@
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Python Script" />
+      </list>
+    </option>
+  </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="ProjectId" id="1k6Xhqkt12Vam9OeWkWspRbF915" />
   <component name="ProjectLevelVcsManager">
     <OptionsSetting value="false" id="Update" />
+    <ConfirmationsSetting value="2" id="Add" />
   </component>
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent">
+    <property name="ASKED_ADD_EXTERNAL_FILES" value="true" />
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
-    <property name="settings.editor.selected.configurable" value="preferences.pluginManager" />
+    <property name="settings.editor.selected.configurable" value="discord-application" />
   </component>
   <component name="RunManager">
     <configuration name="main" type="PythonConfigurationType" factoryName="Python" nameIsGenerated="true">
@@ -74,47 +86,72 @@
       <option name="project" value="LOCAL" />
       <updated>1605031214466</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="Updated GUI">
+      <created>1605054592026</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1605054592026</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
+    <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
     <MESSAGE value="Updated log file error checking" />
     <MESSAGE value="Updated log file writing" />
-    <option name="LAST_COMMIT_MESSAGE" value="Updated log file writing" />
+    <MESSAGE value="Updated GUI" />
+    <option name="LAST_COMMIT_MESSAGE" value="Updated GUI" />
   </component>
   <component name="WindowStateProjectService">
-    <state x="310" y="0" key="CommitChangelistDialog2" timestamp="1605031213720">
+    <state x="310" y="0" key="CommitChangelistDialog2" timestamp="1605054591135">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state x="310" y="0" key="CommitChangelistDialog2/0.0.1366.728@0.0.1366.728" timestamp="1605031213720" />
+    <state x="310" y="0" key="CommitChangelistDialog2/0.0.1366.728@0.0.1366.728" timestamp="1605054591135" />
     <state x="463" y="118" key="FileChooserDialogImpl" timestamp="1605027229593">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
     <state x="463" y="118" key="FileChooserDialogImpl/0.0.1366.728@0.0.1366.728" timestamp="1605027229593" />
-    <state width="1345" height="178" key="GridCell.Tab.0.bottom" timestamp="1605054437443">
+    <state width="1345" height="89" key="GridCell.Tab.0.bottom" timestamp="1605058896710">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state width="1345" height="178" key="GridCell.Tab.0.bottom/0.0.1366.728@0.0.1366.728" timestamp="1605054437443" />
-    <state width="1345" height="178" key="GridCell.Tab.0.center" timestamp="1605054437443">
+    <state width="1345" height="89" key="GridCell.Tab.0.bottom/0.0.1366.728@0.0.1366.728" timestamp="1605058896710" />
+    <state width="1345" height="89" key="GridCell.Tab.0.center" timestamp="1605058896710">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state width="1345" height="178" key="GridCell.Tab.0.center/0.0.1366.728@0.0.1366.728" timestamp="1605054437443" />
-    <state width="1345" height="178" key="GridCell.Tab.0.left" timestamp="1605054437442">
+    <state width="1345" height="89" key="GridCell.Tab.0.center/0.0.1366.728@0.0.1366.728" timestamp="1605058896710" />
+    <state width="1345" height="89" key="GridCell.Tab.0.left" timestamp="1605058896709">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state width="1345" height="178" key="GridCell.Tab.0.left/0.0.1366.728@0.0.1366.728" timestamp="1605054437442" />
-    <state width="1345" height="178" key="GridCell.Tab.0.right" timestamp="1605054437443">
+    <state width="1345" height="89" key="GridCell.Tab.0.left/0.0.1366.728@0.0.1366.728" timestamp="1605058896709" />
+    <state width="1345" height="89" key="GridCell.Tab.0.right" timestamp="1605058896710">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state width="1345" height="178" key="GridCell.Tab.0.right/0.0.1366.728@0.0.1366.728" timestamp="1605054437443" />
-    <state x="184" y="8" key="SettingsEditor" timestamp="1605054577437">
+    <state width="1345" height="89" key="GridCell.Tab.0.right/0.0.1366.728@0.0.1366.728" timestamp="1605058896710" />
+    <state width="1345" height="222" key="GridCell.Tab.1.bottom" timestamp="1605058814759">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state x="184" y="8" key="SettingsEditor/0.0.1366.728@0.0.1366.728" timestamp="1605054577437" />
-    <state x="275" y="83" key="Vcs.Push.Dialog.v2" timestamp="1605031215492">
+    <state width="1345" height="222" key="GridCell.Tab.1.bottom/0.0.1366.728@0.0.1366.728" timestamp="1605058814759" />
+    <state width="1345" height="222" key="GridCell.Tab.1.center" timestamp="1605058814759">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state x="275" y="83" key="Vcs.Push.Dialog.v2/0.0.1366.728@0.0.1366.728" timestamp="1605031215492" />
+    <state width="1345" height="222" key="GridCell.Tab.1.center/0.0.1366.728@0.0.1366.728" timestamp="1605058814759" />
+    <state width="1345" height="222" key="GridCell.Tab.1.left" timestamp="1605058814759">
+      <screen x="0" y="0" width="1366" height="728" />
+    </state>
+    <state width="1345" height="222" key="GridCell.Tab.1.left/0.0.1366.728@0.0.1366.728" timestamp="1605058814759" />
+    <state width="1345" height="222" key="GridCell.Tab.1.right" timestamp="1605058814759">
+      <screen x="0" y="0" width="1366" height="728" />
+    </state>
+    <state width="1345" height="222" key="GridCell.Tab.1.right/0.0.1366.728@0.0.1366.728" timestamp="1605058814759" />
+    <state x="41" y="3" key="SettingsEditor" timestamp="1605057048846">
+      <screen x="0" y="0" width="1366" height="728" />
+    </state>
+    <state x="41" y="3" key="SettingsEditor/0.0.1366.728@0.0.1366.728" timestamp="1605057048846" />
+    <state x="275" y="83" key="Vcs.Push.Dialog.v2" timestamp="1605054592933">
+      <screen x="0" y="0" width="1366" height="728" />
+    </state>
+    <state x="275" y="83" key="Vcs.Push.Dialog.v2/0.0.1366.728@0.0.1366.728" timestamp="1605054592933" />
     <state x="500" y="277" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2" timestamp="1605029252649">
       <screen x="0" y="0" width="1366" height="728" />
     </state>

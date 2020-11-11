@@ -4,7 +4,7 @@ import tkinter as tk
 from tkinter import ttk
 from tkinter import scrolledtext
 
-global text_area
+global log_area, input_file, output_file
 
 
 # function to return current time
@@ -20,6 +20,8 @@ def quit_app():
 
 def convert_experiment():
     print("converting")
+    with open("experiment_1.txt", 'r') as infile:
+        input_file.insert(tk.END, infile.read()) # read file into text window
     # log
     with open("log_file.txt", 'a+') as log_file:
         log_file.write("[INFO] %s : experiment file converted to csv\n" % timestamp())
@@ -27,70 +29,81 @@ def convert_experiment():
 
 def open_log():
     with open("log_file.txt", 'r') as file:
-        text_area.insert(tk.END, '\n\n===Log File Start===\n\n')
+        log_area.insert(tk.END, '\n\n===Log File Start===\n\n')
         for line in file:
-            text_area.insert(tk.END, line)
-        text_area.insert(tk.END, '\n\n===Log File End===\n\n')
-    text_area.see(tk.END)
+            log_area.insert(tk.END, line)
+        log_area.insert(tk.END, '\n\n===Log File End===\n\n')
+    log_area.see(tk.END)
 
 
 def widgets():
     # menu
-    menubar = tk.Menu(root)
+    menubar = tk.Menu()
     dropdown = tk.Menu(menubar, tearoff=0)
     dropdown.add_command(label="View Log", command=open_log)
     dropdown.add_command(label="Quit", command=quit_app)
     menubar.add_cascade(label="File", menu=dropdown)
     root.config(menu=menubar)
 
-    # widgets
-    experiment_label = tk.Label(root, text='Choose Experiment')
+    # left_frame top
+    left_frame = tk.Frame(root, bg='cyan')
+    left_frame.grid(column=0, row=0, sticky='ne')
+
+    # left_frame bottom
+    left_frame1 = tk.Frame(root, bg='blue')
+    left_frame1.grid(column=0, row=1, sticky='se')
+
+    # right_frame
+    right_frame = tk.Frame(root, bg='red')
+    right_frame.grid(column=1, row=0, sticky='w')
+    testButton = tk.Button(right_frame, text='Test', command=lambda: print('test'))
+    testButton.grid(column=0, row=0)
+
+    # left_frame top widgets
+
+    # input experiment file
+    input_label = tk.Label(left_frame, text='Input File Text (.txt)')
+    input_label.grid(column=0, row=1, sticky='ew')
+    global input_file
+    input_file = scrolledtext.ScrolledText(left_frame, wrap=tk.WORD, width=40, height =7,
+                                           font=('Calibri, 10'), bg='black', fg='white')
+    input_file.grid(column=1, row=1, padx=10, pady=10, columnspan=2)
+
+    # output csv file
+    output_label = tk.Label(left_frame, text='Output File Text (.csv)')
+    output_label.grid(column=0, row=2, sticky='ew')
+    global output_file
+    output_file = scrolledtext.ScrolledText(left_frame, wrap=tk.WORD, width=40, height=7,
+                                           font=('Calibri, 10'), bg='black', fg='white')
+    output_file.grid(column=1, row=2, padx=10, pady=10, columnspan=2)
+
+    experiment_label = tk.Label(left_frame, text='Choose Experiment')
     n = tk.StringVar()
-    experiment_menu = ttk.Combobox(root, textvariable=n)
+    experiment_menu = ttk.Combobox(left_frame, textvariable=n)
     experiment_menu['values'] = ('Experiment 1',
                                  'Experiment 2',
                                  'Experiment 3')
-    experiment_button = tk.Button(text="Convert", command=convert_experiment)
+    experiment_button = tk.Button(left_frame, text="Convert", command=convert_experiment)
+    experiment_menu.current(1)
 
-    # button1 = tk.Button(text='Quit', command=quit_app)
-
-    global text_area
-    text_area = scrolledtext.ScrolledText(root, wrap=tk.WORD, width=40, height=10,
-                                          font=("Calibri", 12), bg="black", fg="white")
-
-    # grid placements
+    # left_frame grid placements
     experiment_label.grid(column=0, row=0, padx=10, pady=10, sticky='ew')
     experiment_menu.grid(column=1, row=0, padx=10, pady=10, sticky='ew')
     experiment_button.grid(column=2, row=0, padx=10, pady=10, sticky='ew')
 
-    # button1.grid(column=1, row=0, padx=10, pady=10, sticky='ew')
+    # left_frame bottom widgets
 
-    text_area.grid(column=0, row=2, padx=10, pady=10, columnspan=2)
-    text_area.focus()
-    experiment_menu.current(1)
+    global log_area
+    log_area = scrolledtext.ScrolledText(left_frame1, wrap=tk.WORD, width=40, height=10,
+                                         font=('Calibri', 12), bg='black', fg='white')
+    log_label = tk.Label(left_frame1, text='Log output')
+
+    log_label.grid(column=0, row=1, sticky='ew')
+    log_area.grid(column=1, row=1, padx=10, pady=10, columnspan=2)
+
     # log
     with open("log_file.txt", 'a+') as log_file:
         log_file.write("[INFO] %s : widgets created\n" % timestamp())
-
-
-def window_geometry():
-    # window geometry
-    screen_height = root.winfo_screenheight()
-    screen_width = root.winfo_screenwidth()
-    window_width = int((screen_width / 1.5) + 50)
-    window_height = int(screen_height / 1.5)
-    window_x_pos = int(screen_width / 8)
-    window_y_pos = int(screen_height / 8)
-
-    print("screen height: " + str(screen_height))
-    print("screen width: " + str(screen_width))
-    print("window height: " + str(window_height))
-    print("window width: " + str(window_width))
-    root_geometry = str(window_width) + 'x' + str(window_height) + \
-        '+' + str(window_x_pos) + '+' + str(window_y_pos)
-    root.geometry(root_geometry)
-    with open("log_file.txt", 'a+') as log_file:
-        log_file.write("[INFO] %s : window geometry complete.\n" % timestamp())
 
 
 def main():
@@ -103,7 +116,6 @@ def main():
     root.title('Project')
     root.resizable(width=False, height=False)
     root.config(bg='grey')
-    window_geometry()
     widgets()
     with open("log_file.txt", 'a+') as log_file:
         log_file.write("[INFO] %s : window created.\n" % timestamp())
@@ -113,6 +125,6 @@ if __name__ == '__main__':
     print('start\n')
     root = tk.Tk()
     main()
-    text_area.insert(tk.END, "[INFO]: window created.\n")
+    log_area.insert(tk.END, "[INFO]: window created.\n")
     root.mainloop()
     print('end\n')
