@@ -6,7 +6,7 @@ from tkinter import ttk
 from tkinter import scrolledtext
 
 # global declarations
-global log_area, input_file, output_file, experiment_menu
+global log_area, input_file, output_file, experiment_menu, right_frame
 
 
 ###################################
@@ -29,7 +29,7 @@ def quit_app():
 ###################################################################
 def convert_experiment():
     global experiment_menu
-    if experiment_menu.current() == 0:  # check selected experiment
+    if experiment_menu.current() == 1:  # check selected experiment
         if os.path.isfile('experiment_1.txt'):  # check file exists
             with open("experiment_1.txt", 'r') as infile:
                 input_file.insert(tk.END, infile.read())  # read file into text window
@@ -40,7 +40,7 @@ def convert_experiment():
             # log
             with open("log_file.txt", 'a+') as log_file:
                 log_file.write("[ERROR] %s : input file could not be found\n" % timestamp())
-    elif experiment_menu.current() == 1:  # check selected experiment
+    elif experiment_menu.current() == 2:  # check selected experiment
         if os.path.isfile('experiment_2.txt'):  # check file exists
             with open("experiment_2.txt", 'r') as infile:
                 input_file.insert(tk.END, infile.read())  # read file into text window
@@ -49,6 +49,7 @@ def convert_experiment():
                 log_file.write("[INFO] %s : experiment file converted to csv\n" % timestamp())
         else:
             log_area.insert(tk.END, "[ERROR] %s : input file could not be found\n" % timestamp())
+            log_area.see(tk.END)
             # log
             with open("log_file.txt", 'a+') as log_file:
                 log_file.write("[ERROR] %s : input file could not be found\n" % timestamp())
@@ -66,6 +67,24 @@ def open_log():
     log_area.see(tk.END)
 
 
+def window_geometry():
+    # window geometry
+    screen_height = root.winfo_screenheight()
+    screen_width = root.winfo_screenwidth()
+    window_width = int(910)
+    window_height = int(565)
+    window_x_pos = int(screen_width / 8)
+    window_y_pos = int(screen_height / 8)
+
+    print("screen height: " + str(screen_height))
+    print("screen width: " + str(screen_width))
+    print("window height: " + str(window_height))
+    print("window width: " + str(window_width))
+    root_geometry = str(window_width) + 'x' + str(window_height) + \
+        '+' + str(window_x_pos) + '+' + str(window_y_pos)
+    root.geometry(root_geometry)
+
+
 ##################################################
 # called to create all widgets in the GUI
 ##################################################
@@ -79,18 +98,17 @@ def widgets():
     root.config(menu=menubar)
 
     # left_frame top
-    left_frame = tk.Frame(root, bg='#e6e6e6')
+    left_frame = tk.Frame(root, bg='#e6e6e6', highlightbackground="black", highlightthickness=2)
     left_frame.grid(column=0, row=0, padx=5, pady=5, sticky='ne')
 
     # left_frame bottom
-    left_frame1 = tk.Frame(root, bg='#e6e6e6')
+    left_frame1 = tk.Frame(root, bg='#e6e6e6', highlightbackground="black", highlightthickness=2)
     left_frame1.grid(column=0, row=1, padx=5, pady=5, sticky='se')
 
     # right_frame
-    right_frame = tk.Frame(root, bg='red')
-    right_frame.grid(column=1, row=0, sticky='w')
-    testButton = tk.Button(right_frame, text='Test', command=lambda: print('test'))
-    testButton.grid(column=0, row=0)
+    global right_frame
+    right_frame = tk.Frame(root, bg='#e6e6e6', highlightbackground="black", highlightthickness=2)
+    right_frame.grid(column=1, row=0, padx=5, pady=5, sticky='nsw')
 
     #####################################################
     # left_frame top widgets
@@ -113,19 +131,22 @@ def widgets():
 
     experiment_label = tk.Label(left_frame, text='Choose Experiment')
     n = tk.StringVar()
+    value1 = n.get()
     global experiment_menu
-    experiment_menu = ttk.Combobox(left_frame, textvariable=n)
-    experiment_menu['values'] = ('Experiment 1',
+    experiment_menu = ttk.Combobox(left_frame, textvariable=value1)
+    experiment_menu['values'] = ('Select Experiment:',
+                                 'Experiment 1',
                                  'Experiment 2',
                                  'Experiment 3')
     experiment_button = tk.Button(left_frame, text="Convert", command=convert_experiment)
-    experiment_menu.current(1)
+    experiment_menu.current(0)
 
     # left_frame grid placements
     experiment_label.grid(column=0, row=0, padx=10, pady=10, sticky='ew')
     experiment_menu.grid(column=1, row=0, padx=10, pady=10, sticky='ew')
     experiment_button.grid(column=2, row=0, padx=10, pady=10, sticky='ew')
 
+    #####################################################
     # left_frame bottom widgets
 
     global log_area
@@ -135,6 +156,28 @@ def widgets():
 
     log_label.grid(column=0, row=1, sticky='ew')
     log_area.grid(column=1, row=1, padx=10, pady=10, columnspan=2)
+
+    #####################################################
+    # right_frame widgets
+
+    graph_label = tk.Label(right_frame, text='Select Graph')
+    graph_label.grid(column=0, row=0, padx=10, pady=10, sticky='ew')
+
+    n = tk.StringVar()
+    value2 = n.get()
+    graph_select = ttk.Combobox(right_frame, textvariable=value2)
+    graph_select['values'] = ('Select Graph Type:',
+                              'Type 1',
+                              'Type 2',
+                              'Type 3')
+    graph_select.current(0)
+    graph_select.grid(column=1, row=0, padx=10, pady=10)
+
+    graph_button = tk.Button(right_frame, text='Plot Graph', command=lambda: print('plotting'))
+    graph_button.grid(column=2, row=0, padx=10, pady=10)
+
+    save_button = tk.Button(right_frame, text='Save Graph', command=lambda: print('saving'))
+    save_button.grid(column=3, row=0, padx=10, pady=10)
 
     # log
     with open("log_file.txt", 'a+') as log_file:
@@ -151,6 +194,7 @@ def main():
     root.title('Project')
     root.resizable(width=False, height=False)
     root.config(bg='grey')
+    window_geometry()
     widgets()
     with open("log_file.txt", 'a+') as log_file:
         log_file.write("[INFO] %s : window created.\n" % timestamp())
