@@ -1,3 +1,4 @@
+import csv
 import time
 import os
 import sys
@@ -7,14 +8,33 @@ from tkinter import ttk
 from tkinter import scrolledtext
 
 # global declarations
+import conversion
+
 global log_area, input_file, output_file, experiment_menu, right_frame, graph_select
 
 
+######################################
+# function to reset all widgets
+######################################
 def reset():
     root.quit()
     window_geometry()
     widgets()
     root.mainloop()
+    # log
+    with open("log_file.txt", 'a+') as log_file:
+        log_file.write("[INFO] %s : window created\n" % timestamp())
+
+
+#################################################
+# function to open & read csv file into gui
+#################################################
+def open_csv():
+    output_file.delete(1.0, tk.END)
+    with open("output.csv", newline='') as csvfile:
+        filereader = csv.reader(csvfile, delimiter=' ', quotechar='|')
+        for row in filereader:
+            output_file.insert(tk.END, row)
 
 
 ###################################
@@ -64,10 +84,14 @@ def save_graph():
 ###################################################################
 def convert_experiment():
     global experiment_menu
+    input_file.delete(1.0, tk.END)
     if experiment_menu.current() == 1:  # check selected experiment
         if os.path.isfile('experiment_1.txt'):  # check file exists
             with open("experiment_1.txt", 'r') as infile:
                 input_file.insert(tk.END, infile.read())  # read file into text window
+                conversion.main("experiment_1.txt")  # call conversion script
+                open_csv()
+                log_area.insert(tk.END, "[INFO]: experiment file converted to csv")
             # log
             with open("log_file.txt", 'a+') as log_file:
                 log_file.write("[INFO] %s : experiment file converted to csv\n" % timestamp())
@@ -80,6 +104,9 @@ def convert_experiment():
         if os.path.isfile('experiment_2.txt'):  # check file exists
             with open("experiment_2.txt", 'r') as infile:
                 input_file.insert(tk.END, infile.read())  # read file into text window
+                conversion.main("experiment_2.txt")
+                open_csv()
+                log_area.insert(tk.END, "[INFO]: experiment file converted to csv")
             # log
             with open("log_file.txt", 'a+') as log_file:
                 log_file.write("[INFO] %s : experiment file converted to csv\n" % timestamp())
@@ -126,8 +153,8 @@ def window_geometry():
     h = root.winfo_reqheight()
     ws = root.winfo_screenwidth()
     hs = root.winfo_screenheight()
-    x = (ws / 2) - (w / 2)
-    y = (hs / 2) - (h / 2)
+    x = (ws / 8) - (w / 8)
+    y = (hs / 8) - (h / 8)
     root.geometry('+%d+%d' % (x, y))
 
 
@@ -164,7 +191,7 @@ def widgets():
     input_label = tk.Label(left_frame, text='Input File Text (.txt)')
     input_label.grid(column=0, row=2, sticky='ew')
     global input_file
-    input_file = scrolledtext.ScrolledText(left_frame, wrap=tk.WORD, width=40, height=7,
+    input_file = scrolledtext.ScrolledText(left_frame, wrap=tk.WORD, width=50, height=7,
                                            font='Calibri, 10', bg='black', fg='white')
     input_file.grid(column=1, row=2, padx=10, pady=10, columnspan=2)
 
@@ -172,7 +199,7 @@ def widgets():
     output_label = tk.Label(left_frame, text='Output File Text (.csv)')
     output_label.grid(column=0, row=3, sticky='ew')
     global output_file
-    output_file = scrolledtext.ScrolledText(left_frame, wrap=tk.WORD, width=40, height=7,
+    output_file = scrolledtext.ScrolledText(left_frame, wrap=tk.WORD, width=50, height=7,
                                             font='Calibri, 10', bg='black', fg='white')
     output_file.grid(column=1, row=3, padx=10, pady=10, columnspan=2)
 
@@ -201,7 +228,7 @@ def widgets():
     # left_frame bottom widgets
 
     global log_area
-    log_area = scrolledtext.ScrolledText(left_frame1, wrap=tk.WORD, width=41, height=10,
+    log_area = scrolledtext.ScrolledText(left_frame1, wrap=tk.WORD, width=50, height=10,
                                          font=('Calibri', 12), bg='black', fg='white')
     log_label = tk.Label(left_frame1, text='Log output')
 
@@ -260,4 +287,5 @@ if __name__ == '__main__':
     main()
     log_area.insert(tk.END, "[INFO]: window created.\n")
     root.mainloop()
+    # os.remove('output.csv')
     print('end\n')
