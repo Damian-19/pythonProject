@@ -7,8 +7,8 @@ from tkinter import ttk
 from tkinter import scrolledtext
 from tkinter import messagebox
 
-# import matplotlib.pyplot as plt
-# from matplotlib.backends.backend_tkagg import (FigureCanvasTkAgg, NavigationToolbar2Tk)
+import matplotlib.pyplot as plt
+from matplotlib.backends.backend_tkagg import (FigureCanvasTkAgg, NavigationToolbar2Tk)
 
 # global declarations
 import conversion
@@ -19,7 +19,7 @@ global log_area, input_file, output_file, experiment_menu, right_frame, graph_se
 ######################################
 # function to reset all widgets
 ######################################
-def reset():
+def reset_app():
     input_file.delete(1.0, tk.END)
     output_file.delete(1.0, tk.END)
     log_area.delete(1.0, tk.END)
@@ -166,6 +166,7 @@ def window_geometry():
 # function to ask user to save the current log file
 ##########################################################
 def save_log():
+    print('save log start')
     # save the log file
     if os.path.isfile('log/log_file.txt'):
         save_log_box = messagebox.askyesno(
@@ -184,6 +185,7 @@ def save_log():
 # function to ask the user to save the converted experiment file
 #######################################################################
 def save_box():
+    print('save csv start')
     # messagebox
     if os.path.isfile('csv/output.csv'):
         savebox = messagebox.askyesno(
@@ -215,7 +217,7 @@ def widgets():
     menubar = tk.Menu()
     dropdown = tk.Menu(menubar, tearoff=0)
     dropdown.add_command(label="View Log", command=open_log)
-    dropdown.add_command(label="Reset Window", command=reset)
+    dropdown.add_command(label="Reset Window", command=reset_app)
     dropdown.add_command(label="Quit", command=save_log)
     menubar.add_cascade(label="File", menu=dropdown)
     root.config(menu=menubar)
@@ -286,15 +288,15 @@ def widgets():
     # right_frame widgets
 
     # graph
-    """fig = plt.figure(figsize=(2, 3))
+    fig = plt.figure(figsize=(5, 5))
     canvas = FigureCanvasTkAgg(fig, master=right_frame)
     canvas.draw()
-    canvas.get_tk_widget().grid(column=0, row=1, padx=10, pady=10)
+    canvas.get_tk_widget().grid(column=0, row=1, padx=10, pady=10, columnspan=4)
 
     toolbarFrame = tk.Frame(master=right_frame)
-    toolbarFrame.grid(column=0, row=2)
+    toolbarFrame.grid(column=0, row=2, columnspan=4)
     toolbar = NavigationToolbar2Tk(canvas, toolbarFrame)
-    """
+
 
     graph_label = tk.Label(right_frame, text='Select Graph')
     graph_label.grid(column=0, row=0, padx=10, pady=10, sticky='ew')
@@ -343,8 +345,8 @@ if __name__ == '__main__':
     print('start\n')
     root = tk.Tk()
     main()
-    log_area.insert(tk.END, "[INFO]: window created.\n")
+    # log_area.insert(tk.END, "[INFO]: window created.\n")
     root.mainloop()
-    if os.path.isfile('log/log_file.txt'):
-        os.remove('log/log_file.txt')
+    # if os.path.isfile('log/log_file.txt'):
+    #    os.remove('log/log_file.txt')
     print('end\n')

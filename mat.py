@@ -1,77 +1,34 @@
-# ------------------------------------------------------------------
-# File name       : matplotlib_1.py
-# ------------------------------------------------------------------
-# Group number    : ...
-# Group members   : ...
-# Last updated on : ...
-# ------------------------------------------------------------------
-# Module description:
-# Python with NumPy and Matplotlib to plot the data values for the
-# equation y = ax + b
-# ------------------------------------------------------------------
+# messagebox
+if os.path.isfile('csv/output.csv'):
+    savebox = messagebox.askyesno(
+        title='Save File?',
+        message='Would you like to save the converted experiment file?'
+    )
+    if savebox is True:
+        timedate = time.strftime("%Y%m%d-%H%M%S")
+        os.rename(r'csv/output.csv', r'csv/output_' + timedate + '.csv')
+    else:
+        if os.path.isfile('csv/output.csv'):
+            os.remove('csv/output.csv')
+            log_area.insert(tk.END, '[INFO]: Output file deleted.\n')
+            # log
+        with open("log/log_file.txt", 'a+') as log_file:
+            log_file.write("[INFO] %s : output file deleted.\n")
+    quit_app()
 
-# ------------------------------------------------------------------
-# Modules to import
-# ------------------------------------------------------------------
-
-import time
-import numpy as np
-import matplotlib.pyplot as plt
-
-
-# ------------------------------------------------------------------
-# def plot_values(x, y)
-# ------------------------------------------------------------------
-
-def plot_values(x, y):
-    plt.plot(x, y)
-    # plt.plot(x, y, '-')
-    # plt.plot(x, y, 'o')
-    # plt.plot(x, y, '-o')
-
-    plt.title('Plot of y vs. x')
-    plt.xlabel('x')
-    plt.ylabel('y')
-    plt.grid()
-    plt.show()
+else:
+    print('File does not exist')
 
 
-# ------------------------------------------------------------------
-# def main()
-# ------------------------------------------------------------------
-# Main script function
-# ------------------------------------------------------------------
 
-def main():
-    print('Start script run %s ' % time.strftime('%c'))
-
-    a = 4
-    b = 5
-    x = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
-
-    x_data = np.array(x)
-
-    y_data = (a * x_data) + b
-
-    print(a)
-    print(b)
-    print(x)
-    print(x_data)
-    print(y_data)
-
-    plot_values(x_data, y_data)
-
-    print('End script run %s ' % time.strftime('%c'))
-
-
-# ------------------------------------------------------------------
-# Module is only run as a script or with python -m,  but not
-# when it is imported.
-# ------------------------------------------------------------------
-
-if __name__ == '__main__':
-    main()
-
-# ------------------------------------------------------------------
-# End of script
-# ------------------------------------------------------------------
+    # save the log file
+    if os.path.isfile('log/log_file.txt'):
+        save_log_box = messagebox.askyesno(
+            title='Save Log File?',
+            message='Would you like to save the current log file?'
+        )
+    if save_log_box is True:
+        timedate = time.strftime("%Y%m%d-%H%M%S")
+        os.rename(r'log/log_file.txt', r'log/log_file_' + timedate + '.txt')
+    else:
+        print('Log file not saved')
