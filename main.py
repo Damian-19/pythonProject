@@ -7,6 +7,9 @@ import tkinter as tk
 from tkinter import ttk
 from tkinter import scrolledtext
 
+import matplotlib.pyplot as plt
+from matplotlib.backends.backend_tkagg import (FigureCanvasTkAgg, NavigationToolbar2Tk)
+
 # global declarations
 import conversion
 
@@ -17,6 +20,7 @@ global log_area, input_file, output_file, experiment_menu, right_frame, graph_se
 # function to reset all widgets
 ######################################
 def reset():
+    os.remove('output.csv')
     root.quit()
     window_geometry()
     widgets()
@@ -156,6 +160,8 @@ def window_geometry():
     x = (ws / 8) - (w / 8)
     y = (hs / 8) - (h / 8)
     root.geometry('+%d+%d' % (x, y))
+    # fullscreen
+    # root.geometry("{0}x{1}+0+0".format(root.winfo_screenwidth(), root.winfo_screenheight()))
 
 
 ##################################################
@@ -238,6 +244,17 @@ def widgets():
     #####################################################
     # right_frame widgets
 
+    # graph
+    """fig = plt.figure(figsize=(4, 5))
+    canvas = FigureCanvasTkAgg(fig, master=right_frame)
+    canvas.draw()
+    canvas.get_tk_widget().grid(column=0, row=1, padx=10, pady=10)
+
+    toolbarFrame = tk.Frame(master=right_frame)
+    toolbarFrame.grid(column=0, row=2)
+    toolbar = NavigationToolbar2Tk(canvas, toolbarFrame)
+    """
+
     graph_label = tk.Label(right_frame, text='Select Graph')
     graph_label.grid(column=0, row=0, padx=10, pady=10, sticky='ew')
 
@@ -288,4 +305,13 @@ if __name__ == '__main__':
     log_area.insert(tk.END, "[INFO]: window created.\n")
     root.mainloop()
     # os.remove('output.csv')
+    save = input('Would you like to save the converted experiment file? (Y/N): ')
+    if save == 'y' or save == 'Y':
+        pass
+    elif save == 'n' or save == 'N':
+        if os.path.isfile('output.csv'):
+            os.remove('output.csv')
+        else:
+            print('File does not exist')
+        print('File removed')
     print('end\n')
