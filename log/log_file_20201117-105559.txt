@@ -1,3 +1,0 @@
-[INFO] 11/17/20 10:55:53 : widgets created
-[INFO] 11/17/20 10:55:53 : window created.
-[INFO] 11/17/20 10:55:56 : experiment file converted to csv

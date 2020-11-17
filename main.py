@@ -1,11 +1,11 @@
 import csv
 import time
 import os
+import sys
 import os.path
 import tkinter as tk
 from tkinter import ttk
 from tkinter import scrolledtext
-# from tkinter import messagebox
 
 import matplotlib.pyplot as plt
 from matplotlib.backends.backend_tkagg import (FigureCanvasTkAgg, NavigationToolbar2Tk)
@@ -23,6 +23,7 @@ def reset_app():
     input_file.delete(1.0, tk.END)
     output_file.delete(1.0, tk.END)
     log_area.delete(1.0, tk.END)
+    log_area.insert(tk.END, '[INFO]: window reset')
     # log
     with open("log/log_file.txt", 'a+') as log_file:
         log_file.write("[INFO] %s : window created\n" % timestamp())
@@ -173,11 +174,12 @@ def save_log():
             title='Save Log File?',
             message='Would you like to save the current log file?'
         )
-    if save_log_box is True:
-        timedate = time.strftime("%Y%m%d-%H%M%S")
-        os.rename(r'log/log_file.txt', r'log/log_file_' + timedate + '.txt')
-    else:
-        print('Log file not saved')
+        if save_log_box is True:
+            timedate = time.strftime("%Y%m%d-%H%M%S")
+            os.rename(r'log/log_file.txt', r'log/log_file_' + timedate + '.txt')
+        else:
+            print('Log file not saved')
+            os.remove('log/log_file.txt')
     save_box()
 
 
@@ -288,15 +290,14 @@ def widgets():
     # right_frame widgets
 
     # graph
-    fig = plt.figure(figsize=(5, 5))
+    """fig = plt.figure(figsize=(5, 5))
     canvas = FigureCanvasTkAgg(fig, master=right_frame)
     canvas.draw()
     canvas.get_tk_widget().grid(column=0, row=1, padx=10, pady=10, columnspan=4)
 
-    toolbarFrame = tk.Frame(master=right_frame)
-    toolbarFrame.grid(column=0, row=2, columnspan=4)
-    toolbar = NavigationToolbar2Tk(canvas, toolbarFrame)
-
+    toolbar_frame = tk.Frame(master=right_frame)
+    toolbar_frame.grid(column=0, row=2, columnspan=4)
+    toolbar = NavigationToolbar2Tk(canvas, toolbar_frame)"""
 
     graph_label = tk.Label(right_frame, text='Select Graph')
     graph_label.grid(column=0, row=0, padx=10, pady=10, sticky='ew')
@@ -345,8 +346,9 @@ if __name__ == '__main__':
     print('start\n')
     root = tk.Tk()
     main()
-    # log_area.insert(tk.END, "[INFO]: window created.\n")
+    log_area.insert(tk.END, "[INFO]: window created.\n")
     root.mainloop()
-    # if os.path.isfile('log/log_file.txt'):
-    #    os.remove('log/log_file.txt')
+    if os.path.isfile('log/log_file.txt'):
+        os.remove('log/log_file.txt')
     print('end\n')
+    sys.exit(1)
