@@ -5,7 +5,7 @@ import os.path
 import tkinter as tk
 from tkinter import ttk
 from tkinter import scrolledtext
-from tkinter import messagebox
+# from tkinter import messagebox
 
 import matplotlib.pyplot as plt
 from matplotlib.backends.backend_tkagg import (FigureCanvasTkAgg, NavigationToolbar2Tk)
@@ -169,7 +169,7 @@ def save_log():
     print('save log start')
     # save the log file
     if os.path.isfile('log/log_file.txt'):
-        save_log_box = messagebox.askyesno(
+        save_log_box = tk.messagebox.askyesno(
             title='Save Log File?',
             message='Would you like to save the current log file?'
         )
@@ -188,7 +188,7 @@ def save_box():
     print('save csv start')
     # messagebox
     if os.path.isfile('csv/output.csv'):
-        savebox = messagebox.askyesno(
+        savebox = tk.messagebox.askyesno(
             title='Save File?',
             message='Would you like to save the converted experiment file?'
         )

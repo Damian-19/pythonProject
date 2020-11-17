@@ -34,3 +34,5 @@
 [INFO] 11/17/20 11:45:55 : window created.
 [INFO] 11/17/20 11:46:24 : widgets created
 [INFO] 11/17/20 11:46:24 : window created.
+[INFO] 11/17/20 11:48:04 : widgets created
+[INFO] 11/17/20 11:48:04 : window created.
