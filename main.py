@@ -26,8 +26,19 @@ def reset_app():
     log_area.insert(tk.END, '[INFO]: window reset')
     # log
     with open("log/log_file.txt", 'a+') as log_file:
-        log_file.write("[INFO] %s : window created\n" % timestamp())
+        log_file.write("[INFO] %s : window reset\n" % timestamp())
 
+
+##################################################
+# function to clear the current graph area
+##################################################
+def clear_graph():
+    print('graph cleared')
+    graph_select.current(0)
+    log_area.insert(tk.END, '[INFO]: graph cleared\n')
+    # log
+    with open("log/log_file.txt", 'a+') as log_file:
+        log_file.write("[INFO] %s : graph cleared\n" % timestamp())
 
 #################################################
 # function to open & read csv file into gui
@@ -180,6 +191,8 @@ def save_log():
         else:
             print('Log file not saved')
             os.remove('log/log_file.txt')
+    else:
+        print('No log file found, skipping...')
     save_box()
 
 
@@ -191,7 +204,7 @@ def save_box():
     # messagebox
     if os.path.isfile('csv/output.csv'):
         savebox = tk.messagebox.askyesno(
-            title='Save File?',
+            title='Save Log File?',
             message='Would you like to save the converted experiment file?'
         )
         if savebox is True:
@@ -200,14 +213,13 @@ def save_box():
         else:
             if os.path.isfile('csv/output.csv'):
                 os.remove('csv/output.csv')
-                log_area.insert(tk.END, '[INFO]: Output file deleted.\n')
-                # log
-            with open("log/log_file.txt", 'a+') as log_file:
-                log_file.write("[INFO] %s : output file deleted.\n")
+                print('converted experiment file not saved')
+                # log_area.insert(tk.END, '[INFO]: Output csv file deleted.\n')
+                # no logging as that file has already been saved
         quit_app()
 
     else:
-        print('File does not exist')
+        print('No converted experiment file found, skipping...')
         quit_app()
 
 
@@ -220,22 +232,26 @@ def widgets():
     dropdown = tk.Menu(menubar, tearoff=0)
     dropdown.add_command(label="View Log", command=open_log)
     dropdown.add_command(label="Reset Window", command=reset_app)
-    dropdown.add_command(label="Quit", command=save_log)
+    # dropdown.add_command(label="Quit", command=save_log)
     menubar.add_cascade(label="File", menu=dropdown)
+    menubar.add_cascade(label="Exit", command=save_log)
     root.config(menu=menubar)
 
+    # left_frame_main
+    left_frame_main = tk.Frame(root, bg='grey', highlightthickness=0)
+    left_frame_main.grid(column=0, row=0, padx=0, pady=0, sticky='nsew')
     # left_frame top
-    left_frame = tk.Frame(root, bg='#e6e6e6', highlightbackground="black", highlightthickness=2)
-    left_frame.grid(column=0, row=0, padx=5, pady=5, sticky='ew')
+    left_frame = tk.Frame(left_frame_main, bg='#e6e6e6', highlightbackground="black", highlightthickness=2)
+    left_frame.grid(column=0, row=0, padx=5, pady=5, sticky='nsew')
 
     # left_frame bottom
-    left_frame1 = tk.Frame(root, bg='#e6e6e6', highlightbackground="black", highlightthickness=2)
-    left_frame1.grid(column=0, row=1, padx=5, pady=5, sticky='ew')
+    left_frame1 = tk.Frame(left_frame_main, bg='#e6e6e6', highlightbackground="black", highlightthickness=2)
+    left_frame1.grid(column=0, row=1, padx=5, pady=5, sticky='nsew')
 
     # right_frame
     global right_frame
     right_frame = tk.Frame(root, bg='#e6e6e6', highlightbackground="black", highlightthickness=2)
-    right_frame.grid(column=1, row=0, padx=5, pady=5, sticky='nsw')
+    right_frame.grid(column=1, row=0, padx=5, pady=5, sticky='nsew')
 
     #####################################################
     # left_frame top widgets
@@ -299,6 +315,8 @@ def widgets():
     toolbar_frame.grid(column=0, row=2, columnspan=4)
     toolbar = NavigationToolbar2Tk(canvas, toolbar_frame)"""
 
+    placeholder = tk.Text(right_frame, width=70, height=30)
+    placeholder.grid(column=0, row=2, columnspan=5, padx=5, pady=5)
     graph_label = tk.Label(right_frame, text='Select Graph')
     graph_label.grid(column=0, row=0, padx=10, pady=10, sticky='ew')
 
@@ -311,15 +329,18 @@ def widgets():
                               'Type 2',
                               'Type 3')
     graph_select.current(0)
-    graph_select.grid(column=1, row=0, padx=10, pady=10)
+    graph_select.grid(column=1, row=0, padx=10, pady=10, sticky='ew')
 
     graph_button = tk.Button(right_frame, text='Plot Graph', command=plot_graphs)
-    graph_button.grid(column=2, row=0, padx=10, pady=10)
+    graph_button.grid(column=2, row=0, padx=10, pady=10, sticky='ew')
 
     save_button = tk.Button(right_frame, text='Save Graph', command=save_graph)
-    save_button.grid(column=3, row=0, padx=10, pady=10)
+    save_button.grid(column=3, row=0, padx=10, pady=10, sticky='ew')
 
-    ttk.Separator(right_frame, orient='horizontal').grid(column=0, row=1, columnspan=4, padx=5, pady=5, sticky='ew')
+    clear_button = tk.Button(right_frame, text='Clear Graph', command=clear_graph)
+    clear_button.grid(column=4, row=0, padx=10, pady=10, sticky='ew')
+
+    ttk.Separator(right_frame, orient='horizontal').grid(column=0, row=1, columnspan=5, padx=5, pady=5, sticky='ew')
 
     # log
     with open("log/log_file.txt", 'a+') as log_file:
@@ -327,12 +348,6 @@ def widgets():
 
 
 def main():
-    """if os.path.exists("log/log_file.txt"):
-        os.remove("log/log_file.txt")
-    else:
-        print("The file does not exist")
-    print('main')"""
-
     root.title('Project')
     root.resizable(width=False, height=False)
     root.config(bg='grey')
@@ -351,4 +366,3 @@ if __name__ == '__main__':
     if os.path.isfile('log/log_file.txt'):
         os.remove('log/log_file.txt')
     print('end\n')
-    sys.exit(1)
