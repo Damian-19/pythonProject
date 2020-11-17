@@ -1,7 +1,6 @@
 import csv
 import time
 import os
-import sys
 import os.path
 import tkinter as tk
 from tkinter import ttk
@@ -20,11 +19,9 @@ global log_area, input_file, output_file, experiment_menu, right_frame, graph_se
 # function to reset all widgets
 ######################################
 def reset():
-    os.remove('csv/output.csv')
-    root.quit()
-    window_geometry()
-    widgets()
-    root.mainloop()
+    input_file.delete(1.0, tk.END)
+    output_file.delete(1.0, tk.END)
+    log_area.delete(1.0, tk.END)
     # log
     with open("log/log_file.txt", 'a+') as log_file:
         log_file.write("[INFO] %s : window created\n" % timestamp())
@@ -35,7 +32,7 @@ def reset():
 #################################################
 def open_csv():
     output_file.delete(1.0, tk.END)
-    with open("csv/output.csv", 'a+', newline='') as csvfile:
+    with open("output.csv", 'r+', newline='') as csvfile:
         filereader = csv.reader(csvfile, delimiter=' ', quotechar='|')
         for row in filereader:
             output_file.insert(tk.END, row)
@@ -95,7 +92,7 @@ def convert_experiment():
                 input_file.insert(tk.END, infile.read())  # read file into text window
                 conversion.main("experiment_1.txt")  # call conversion script
                 open_csv()
-                log_area.insert(tk.END, "[INFO]: experiment file converted to csv")
+                log_area.insert(tk.END, "[INFO]: experiment file converted to csv\n")
             # log
             with open("log/log_file.txt", 'a+') as log_file:
                 log_file.write("[INFO] %s : experiment file converted to csv\n" % timestamp())
@@ -164,6 +161,9 @@ def window_geometry():
     # root.geometry("{0}x{1}+0+0".format(root.winfo_screenwidth(), root.winfo_screenheight()))
 
 
+##########################################################
+# function to ask user to save the current log file
+##########################################################
 def save_log():
     # save the log file
     if os.path.isfile('log/log_file.txt'):
@@ -173,12 +173,15 @@ def save_log():
         )
     if save_log_box is True:
         timestr = time.strftime("%Y%m%d-%H%M%S")
-        os.rename(r'log/log_file.txt',r'log/log_file_' + timestr + '.txt')
+        os.rename(r'log/log_file.txt', r'log/log_file_' + timestr + '.txt')
     else:
         print('Log file not saved')
     save_box()
 
 
+#######################################################################
+# function to ask the user to save the converted experiment file
+#######################################################################
 def save_box():
     # messagebox
     if os.path.isfile('csv/output.csv'):
@@ -202,11 +205,11 @@ def save_box():
         print('File does not exist')
         quit_app()
 
+
 ##################################################
 # called to create all widgets in the GUI
 ##################################################
 def widgets():
-
     # menu
     menubar = tk.Menu()
     dropdown = tk.Menu(menubar, tearoff=0)
@@ -266,8 +269,6 @@ def widgets():
     experiment_label.grid(column=0, row=0, padx=10, pady=10, sticky='ew')
     experiment_menu.grid(column=1, row=0, padx=10, pady=10, sticky='ew')
     experiment_button.grid(column=2, row=0, padx=10, pady=10, sticky='ew')
-
-
 
     #####################################################
     # left_frame bottom widgets
@@ -343,4 +344,6 @@ if __name__ == '__main__':
     main()
     log_area.insert(tk.END, "[INFO]: window created.\n")
     root.mainloop()
+    if os.path.isfile('log/log_file.txt'):
+        os.remove('log/log_file.txt')
     print('end\n')

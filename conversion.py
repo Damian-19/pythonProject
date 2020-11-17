@@ -139,7 +139,7 @@ def main(experiment_file):
 
     file1.close()
     file2.close()
-    print("######PROGRAM EXIT#######")
+    print("######CONVERSION END#######")
 
 
 if __name__ == '__main__':
