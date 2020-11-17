@@ -10,7 +10,7 @@ def main(experiment_file):
     i = 0
     empty_list = []
     # output in CSV for experiment results
-    csv_file_output = "output.csv"
+    csv_file_output = "csv/output.csv"
     # experiment_file
 
     file1 = open(csv_file_output, 'w')

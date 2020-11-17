@@ -5,9 +5,10 @@ import os.path
 import tkinter as tk
 from tkinter import ttk
 from tkinter import scrolledtext
+from tkinter import messagebox
 
-import matplotlib.pyplot as plt
-from matplotlib.backends.backend_tkagg import (FigureCanvasTkAgg, NavigationToolbar2Tk)
+# import matplotlib.pyplot as plt
+# from matplotlib.backends.backend_tkagg import (FigureCanvasTkAgg, NavigationToolbar2Tk)
 
 # global declarations
 import conversion
@@ -32,7 +33,7 @@ def reset():
 #################################################
 def open_csv():
     output_file.delete(1.0, tk.END)
-    with open("output.csv", 'r+', newline='') as csvfile:
+    with open("csv/output.csv", 'r+', newline='') as csvfile:
         filereader = csv.reader(csvfile, delimiter=' ', quotechar='|')
         for row in filereader:
             output_file.insert(tk.END, row)
@@ -167,13 +168,13 @@ def window_geometry():
 def save_log():
     # save the log file
     if os.path.isfile('log/log_file.txt'):
-        save_log_box = tk.messagebox.askyesno(
+        save_log_box = messagebox.askyesno(
             title='Save Log File?',
             message='Would you like to save the current log file?'
         )
     if save_log_box is True:
-        timestr = time.strftime("%Y%m%d-%H%M%S")
-        os.rename(r'log/log_file.txt', r'log/log_file_' + timestr + '.txt')
+        timedate = time.strftime("%Y%m%d-%H%M%S")
+        os.rename(r'log/log_file.txt', r'log/log_file_' + timedate + '.txt')
     else:
         print('Log file not saved')
     save_box()
@@ -185,13 +186,13 @@ def save_log():
 def save_box():
     # messagebox
     if os.path.isfile('csv/output.csv'):
-        savebox = tk.messagebox.askyesno(
+        savebox = messagebox.askyesno(
             title='Save File?',
             message='Would you like to save the converted experiment file?'
         )
         if savebox is True:
-            timestr = time.strftime("%Y%m%d-%H%M%S")
-            os.rename(r'csv/output.csv', r'csv/output_' + timestr + '.csv')
+            timedate = time.strftime("%Y%m%d-%H%M%S")
+            os.rename(r'csv/output.csv', r'csv/output_' + timedate + '.csv')
         else:
             if os.path.isfile('csv/output.csv'):
                 os.remove('csv/output.csv')
