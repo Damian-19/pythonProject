@@ -7,14 +7,47 @@ import tkinter as tk
 from tkinter import ttk
 from tkinter import scrolledtext
 
+import numpy as np
+
 import matplotlib.pyplot as plt
-from matplotlib.backends.backend_tkagg import (FigureCanvasTkAgg, NavigationToolbar2Tk)
+from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg  # , NavigationToolbar2Tk)
 
 # global declarations
 import conversion
 
 global log_area, input_file, output_file, experiment_menu, right_frame, graph_select
 
+
+#######################################
+def create_graph():
+    fig1 = plt.Figure(figsize=(5, 4), dpi=100)
+    ax1 = fig1.add_subplot(111)
+
+    row_array = []
+    if os.path.isfile('csv/output.csv'):
+        with open('csv/output.csv', newline='') as csvfile:
+            filereader = csv.reader(csvfile, delimiter=',', quotechar='|')
+            for row in filereader:
+                row_array.append(row)
+    row_array = np.array(row_array, dtype=object)
+    print([row_array[1][0]])
+
+    for i in range(1, len(row_array)):
+        print([row_array[i][0]])
+                # x = row_array[1]
+
+    """x = np.array([])
+    y = np.array([10, 11, 12, 13, 14])
+    ax1.plot(x, y, '-o')
+    ax1.grid()
+    ax1.set_title('Plot 1')
+    ax1.set_xlabel('x')
+    ax1.set_ylabel('y')
+
+    canvas1 = FigureCanvasTkAgg(fig1, master=right_frame)
+    canvas1.draw()
+    canvas1.get_tk_widget().grid(column=0, row=2, columnspan=5)
+"""
 
 ######################################
 # function to reset all widgets
@@ -315,8 +348,8 @@ def widgets():
     toolbar_frame.grid(column=0, row=2, columnspan=4)
     toolbar = NavigationToolbar2Tk(canvas, toolbar_frame)"""
 
-    placeholder = tk.Text(right_frame, width=70, height=30)
-    placeholder.grid(column=0, row=2, columnspan=5, padx=5, pady=5)
+    # placeholder = tk.Text(right_frame, width=70, height=30)
+    # placeholder.grid(column=0, row=2, columnspan=5, padx=5, pady=5)
     graph_label = tk.Label(right_frame, text='Select Graph')
     graph_label.grid(column=0, row=0, padx=10, pady=10, sticky='ew')
 
@@ -331,7 +364,7 @@ def widgets():
     graph_select.current(0)
     graph_select.grid(column=1, row=0, padx=10, pady=10, sticky='ew')
 
-    graph_button = tk.Button(right_frame, text='Plot Graph', command=plot_graphs)
+    graph_button = tk.Button(right_frame, text='Plot Graph', command=create_graph)
     graph_button.grid(column=2, row=0, padx=10, pady=10, sticky='ew')
 
     save_button = tk.Button(right_frame, text='Save Graph', command=save_graph)
