@@ -36,7 +36,7 @@ def create_graph():
 
     x = np.array([])
     y = np.array([])
-    for i in range(1, 30):
+    for i in range(1, len(row_array)):
         # print([row_array[i][1]] + [row_array[i][2]])
         x = np.append(x, [row_array[i][1]], axis=None)
         y = np.append(y, [row_array[i][2]], axis=None)
