@@ -15,11 +15,13 @@ from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg  # , NavigationT
 # global declarations
 import conversion
 
-global log_area, input_file, output_file, experiment_menu, right_frame, graph_select
+global log_area, input_file, output_file, experiment_menu, right_frame, graph_select, conversion_flag
+conversion_flag = False
 
 
 #######################################
 def create_graph():
+    print('plotting')
     fig1 = plt.Figure(figsize=(5, 4), dpi=100)
     ax1 = fig1.add_subplot(111)
 
@@ -32,22 +34,28 @@ def create_graph():
     row_array = np.array(row_array, dtype=object)
     print([row_array[1][0]])
 
-    for i in range(1, len(row_array)):
-        print([row_array[i][0]])
-                # x = row_array[1]
+    x = np.array([])
+    y = np.array([])
+    for i in range(1, 30):
+        # print([row_array[i][1]] + [row_array[i][2]])
+        x = np.append(x, [row_array[i][1]], axis=None)
+        y = np.append(y, [row_array[i][2]], axis=None)
 
-    """x = np.array([])
-    y = np.array([10, 11, 12, 13, 14])
-    ax1.plot(x, y, '-o')
+    # y = np.array([10, 11, 12, 13, 14])
+    ax1.plot(x, y)
     ax1.grid()
     ax1.set_title('Plot 1')
     ax1.set_xlabel('x')
+    # ticks = ax1.get_xticks() * 2 * 2
+    # ax1.set_xticklabels(ticks)
     ax1.set_ylabel('y')
 
     canvas1 = FigureCanvasTkAgg(fig1, master=right_frame)
     canvas1.draw()
     canvas1.get_tk_widget().grid(column=0, row=2, columnspan=5)
-"""
+
+    print('plot complete')
+
 
 ######################################
 # function to reset all widgets
@@ -72,6 +80,7 @@ def clear_graph():
     # log
     with open("log/log_file.txt", 'a+') as log_file:
         log_file.write("[INFO] %s : graph cleared\n" % timestamp())
+
 
 #################################################
 # function to open & read csv file into gui
@@ -130,8 +139,9 @@ def save_graph():
 # called to convert the input experiment .txt file to .csv file
 ###################################################################
 def convert_experiment():
-    global experiment_menu
+    global experiment_menu, conversion_flag
     input_file.delete(1.0, tk.END)
+    output_file.delete(1.0, tk.END)
     if experiment_menu.current() == 1:  # check selected experiment
         if os.path.isfile('experiment_1.txt'):  # check file exists
             with open("experiment_1.txt", 'r') as infile:
@@ -163,6 +173,9 @@ def convert_experiment():
             # log
             with open("log/log_file.txt", 'a+') as log_file:
                 log_file.write("[ERROR] %s : input file could not be found\n" % timestamp())
+    else:
+        log_area.insert(tk.END, '[ERROR]: no file found - conversion aborted\n')
+        print('no conversion run')
 
 
 ########################################################
@@ -398,4 +411,6 @@ if __name__ == '__main__':
     root.mainloop()
     if os.path.isfile('log/log_file.txt'):
         os.remove('log/log_file.txt')
+    if os.path.isfile('csv/output.csv'):
+        os.remove('csv/output.csv')
     print('end\n')
