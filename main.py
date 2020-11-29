@@ -40,10 +40,12 @@ def create_graph():
         for i in range(1, len(row_array)):
             # print([row_array[i][1]] + [row_array[i][2]])
             x = np.append(x, [row_array[i][1]], axis=None)
-            y = np.append(y, [row_array[i][2]], axis=None)
+            # y = np.append(y, [row_array[i][2]], axis=None)
 
+        for i in range(1, len(row_array)):
+            y = np.append(y, [i], axis=None)
         # y = np.array([10, 11, 12, 13, 14])
-        ax1.plot(x.astype(float), y.astype(float))
+        ax1.plot(y.astype(float), x.astype(float))
         ax1.grid()
         ax1.set_title('Plot 1')
         ax1.set_xlabel('x')
@@ -71,7 +73,12 @@ def reset_app():
     input_file.delete(1.0, tk.END)
     output_file.delete(1.0, tk.END)
     log_area.delete(1.0, tk.END)
-    log_area.insert(tk.END, '[INFO]: window reset')
+    fig1 = plt.Figure(figsize=(5, 4), dpi=100)
+    ax1 = fig1.add_subplot(111)
+    canvas1 = FigureCanvasTkAgg(fig1, master=right_frame)
+    canvas1.draw()
+    canvas1.get_tk_widget().grid(column=0, row=2, columnspan=5)
+    log_area.insert(tk.END, '[INFO]: window reset\n')
     # log
     with open("log/log_file.txt", 'a+') as log_file:
         log_file.write("[INFO] %s : window reset\n" % timestamp())
@@ -83,6 +90,11 @@ def reset_app():
 def clear_graph():
     print('graph cleared')
     graph_select.current(0)
+    fig1 = plt.Figure(figsize=(5, 4), dpi=100)
+    ax1 = fig1.add_subplot(111)
+    canvas1 = FigureCanvasTkAgg(fig1, master=right_frame)
+    canvas1.draw()
+    canvas1.get_tk_widget().grid(column=0, row=2, columnspan=5)
     log_area.insert(tk.END, '[INFO]: graph cleared\n')
     # log
     with open("log/log_file.txt", 'a+') as log_file:
@@ -158,12 +170,14 @@ def convert_experiment():
                 log_area.insert(tk.END, "[INFO]: \"experiment_1.txt\" converted to csv\n")
             # log
             with open("log/log_file.txt", 'a+') as log_file:
-                log_file.write("[INFO] %s : (CONVERSION) \"experiment_1.txt\" converted to csv\n" % timestamp())
+                log_file.write("[INFO] %s : (CONVERSION) \"experiment_1.txt\" converted to csv\n"
+                               % timestamp())
         else:
             log_area.insert(tk.END, "[ERROR]: \"experiment_1.txt\" could not be found\n")
             # log
             with open("log/log_file.txt", 'a+') as log_file:
-                log_file.write("[ERROR] %s : (CONVERSION_ERROR) \"experiment_1.txt\" could not be found\n" % timestamp())
+                log_file.write("[ERROR] %s : (CONVERSION_ERROR) \"experiment_1.txt\" could not be found\n"
+                               % timestamp())
 
     elif experiment_menu.current() == 2:  # check selected experiment
         if os.path.isfile('experiments/experiment_2.txt'):  # check file exists
@@ -174,12 +188,14 @@ def convert_experiment():
                 log_area.insert(tk.END, "[INFO]: \"experiment_2.txt\" converted to csv\n")
             # log
             with open("log/log_file.txt", 'a+') as log_file:
-                log_file.write("[INFO] %s : (CONVERSION) \"experiment_2.txt\" converted to csv\n" % timestamp())
+                log_file.write("[INFO] %s : (CONVERSION) \"experiment_2.txt\" converted to csv\n"
+                               % timestamp())
         else:
             log_area.insert(tk.END, "[ERROR]: \"experiment_2.txt\" could not be found\n")
             # log
             with open("log/log_file.txt", 'a+') as log_file:
-                log_file.write("[ERROR] %s : (CONVERSION_ERROR) \"experiment_2.txt\" could not be found\n" % timestamp())
+                log_file.write("[ERROR] %s : (CONVERSION_ERROR) \"experiment_2.txt\" could not be found\n"
+                               % timestamp())
 
     elif experiment_menu.current() == 3:  # check selected experiment
         if os.path.isfile('experiments/experiment_3.txt'):  # check file exists
@@ -190,12 +206,14 @@ def convert_experiment():
                 log_area.insert(tk.END, "[INFO]: \"experiment_3.txt\" converted to csv\n")
             # log
             with open("log/log_file.txt", 'a+') as log_file:
-                log_file.write("[INFO] %s : (CONVERSION) \"experiment_3.txt\" converted to csv\n" % timestamp())
+                log_file.write("[INFO] %s : (CONVERSION) \"experiment_3.txt\" converted to csv\n"
+                               % timestamp())
         else:
             log_area.insert(tk.END, "[ERROR]: \"experiment_3.txt\" could not be found\n")
             # log
             with open("log/log_file.txt", 'a+') as log_file:
-                log_file.write("[ERROR] %s : (CONVERSION_ERROR) \"experiment_3.txt\" could not be found\n" % timestamp())
+                log_file.write("[ERROR] %s : (CONVERSION_ERROR) \"experiment_3.txt\" could not be found\n"
+                               % timestamp())
 
     elif experiment_menu.current() == 4:  # check selected experiment
         if os.path.isfile('experiments/experiment_4.txt'):  # check file exists
@@ -206,12 +224,14 @@ def convert_experiment():
                 log_area.insert(tk.END, "[INFO]: \"experiment_4.txt\" converted to csv\n")
             # log
             with open("log/log_file.txt", 'a+') as log_file:
-                log_file.write("[INFO] %s : (CONVERSION) \"experiment_4.txt\" converted to csv\n" % timestamp())
+                log_file.write("[INFO] %s : (CONVERSION) \"experiment_4.txt\" converted to csv\n"
+                               % timestamp())
         else:
             log_area.insert(tk.END, "[ERROR]: \"experiment_4.txt\" could not be found\n")
             # log
             with open("log/log_file.txt", 'a+') as log_file:
-                log_file.write("[ERROR] %s : (CONVERSION_ERROR) \"experiment_4.txt\" could not be found\n" % timestamp())
+                log_file.write("[ERROR] %s : (CONVERSION_ERROR) \"experiment_4.txt\" could not be found\n"
+                               % timestamp())
 
     elif experiment_menu.current() == 5:  # check selected experiment
         if os.path.isfile('experiments/experiment_5.txt'):  # check file exists
@@ -222,16 +242,19 @@ def convert_experiment():
                 log_area.insert(tk.END, "[INFO]: \"experiment_5.txt\" converted to csv\n")
             # log
             with open("log/log_file.txt", 'a+') as log_file:
-                log_file.write("[INFO] %s : (CONVERSION) \"experiment_5.txt\" converted to csv\n" % timestamp())
+                log_file.write("[INFO] %s : (CONVERSION) \"experiment_5.txt\" converted to csv\n"
+                               % timestamp())
         else:
             log_area.insert(tk.END, "[ERROR]: \"experiment_5.txt\" could not be found\n")
             # log
             with open("log/log_file.txt", 'a+') as log_file:
-                log_file.write("[ERROR] %s : (CONVERSION_ERROR) \"experiment_5.txt\" could not be found\n" % timestamp())
+                log_file.write("[ERROR] %s : (CONVERSION_ERROR) \"experiment_5.txt\" could not be found\n"
+                               % timestamp())
     else:
         # log
         with open("log/log_file.txt", 'a+') as log_file:
-            log_file.write("[ERROR] %s : (CONVERSION_ERROR) file not found - conversion aborted\n" % timestamp())
+            log_file.write("[ERROR] %s : (CONVERSION_ERROR) file not found - conversion aborted\n"
+                           % timestamp())
         log_area.insert(tk.END, '[ERROR]: file not found - conversion aborted\n')
         print('no conversion run')
     log_area.see(tk.END)
@@ -278,6 +301,19 @@ def window_geometry():
     # fullscreen
     # root.geometry("{0}x{1}+0+0".format(root.winfo_screenwidth(), root.winfo_screenheight()))
 
+
+
+def confirm_quit():
+    print('confirm quit')
+    confirm_quit = tk.messagebox.askyesno(
+        title='Quit?',
+        message='Are you sure you want to quit?'
+    )
+    if confirm_quit is True:
+        save_log()
+    else:
+        log_area.insert(tk.END, '[INFO]: program quit aborted\n')
+        log_area.see(tk.END)
 
 ##########################################################
 # function to ask user to save the current log file
@@ -342,7 +378,8 @@ def widgets():
     dropdown.add_command(label="Reset Window", command=reset_app)
     # dropdown.add_command(label="Quit", command=save_log)
     menubar.add_cascade(label="File", menu=dropdown)
-    menubar.add_cascade(label="Exit", command=save_log)
+    menubar.add_cascade(label="Exit", command=confirm_quit)
+    root.protocol("WM_DELETE_WINDOW", confirm_quit)
     root.config(menu=menubar)
 
     # left_frame_main
