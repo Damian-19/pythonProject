@@ -15,10 +15,11 @@ from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg  # , NavigationT
 # global declarations
 import conversion
 
-global log_area, input_file, output_file, experiment_menu, right_frame, graph_select, conversion_flag
-conversion_flag = False
+global log_area, input_file, output_file, experiment_menu, right_frame, graph_select
 
 
+#######################################
+# graphing function
 #######################################
 def create_graph():
     print('plotting')
@@ -42,7 +43,7 @@ def create_graph():
         y = np.append(y, [row_array[i][2]], axis=None)
 
     # y = np.array([10, 11, 12, 13, 14])
-    ax1.plot(x, y)
+    ax1.plot(x.astype(float), y.astype(float))
     ax1.grid()
     ax1.set_title('Plot 1')
     ax1.set_xlabel('x')
@@ -71,7 +72,7 @@ def reset_app():
 
 
 ##################################################
-# function to clear the current graph area
+# function to clear the current graph area #### NOT WORKING ####
 ##################################################
 def clear_graph():
     print('graph cleared')
@@ -123,7 +124,7 @@ def plot_graphs():
 
 
 ############################################
-# function to save plotted graph
+# function to save plotted graph #### NOT WORKING ####
 ############################################
 def save_graph():
     print('saving')
@@ -139,7 +140,7 @@ def save_graph():
 # called to convert the input experiment .txt file to .csv file
 ###################################################################
 def convert_experiment():
-    global experiment_menu, conversion_flag
+    global experiment_menu
     input_file.delete(1.0, tk.END)
     output_file.delete(1.0, tk.END)
     if experiment_menu.current() == 1:  # check selected experiment
@@ -148,14 +149,15 @@ def convert_experiment():
                 input_file.insert(tk.END, infile.read())  # read file into text window
                 conversion.main("experiment_1.txt")  # call conversion script
                 open_csv()
-                log_area.insert(tk.END, "[INFO]: experiment file converted to csv\n")
+                log_area.insert(tk.END, "[INFO]: \"experiment_1.txt\" converted to csv\n")
             # log
             with open("log/log_file.txt", 'a+') as log_file:
-                log_file.write("[INFO] %s : experiment file converted to csv\n" % timestamp())
+                log_file.write("[INFO] %s : (CONVERSION) \"experiment_1.txt\" converted to csv\n" % timestamp())
         else:
+            log_area.insert(tk.END, "[ERROR]: \"experiment_1.txt\" could not be found\n")
             # log
             with open("log/log_file.txt", 'a+') as log_file:
-                log_file.write("[ERROR] %s : input file could not be found\n" % timestamp())
+                log_file.write("[ERROR] %s : (CONVERSION_ERROR) \"experiment_1.txt\" could not be found\n" % timestamp())
 
     elif experiment_menu.current() == 2:  # check selected experiment
         if os.path.isfile('experiment_2.txt'):  # check file exists
@@ -163,19 +165,38 @@ def convert_experiment():
                 input_file.insert(tk.END, infile.read())  # read file into text window
                 conversion.main("experiment_2.txt")
                 open_csv()
-                log_area.insert(tk.END, "[INFO]: experiment file converted to csv")
+                log_area.insert(tk.END, "[INFO]: \"experiment_2.txt\" converted to csv\n")
             # log
             with open("log/log_file.txt", 'a+') as log_file:
-                log_file.write("[INFO] %s : experiment file converted to csv\n" % timestamp())
+                log_file.write("[INFO] %s : (CONVERSION) \"experiment_2.txt\" converted to csv\n" % timestamp())
         else:
-            log_area.insert(tk.END, "[ERROR]: input file could not be found\n")
-            log_area.see(tk.END)
+            log_area.insert(tk.END, "[ERROR]: \"experiment_2.txt\" could not be found\n")
             # log
             with open("log/log_file.txt", 'a+') as log_file:
-                log_file.write("[ERROR] %s : input file could not be found\n" % timestamp())
+                log_file.write("[ERROR] %s : (CONVERSION_ERROR) \"experiment_2.txt\" could not be found\n" % timestamp())
+
+    elif experiment_menu.current() == 3:  # check selected experiment
+        if os.path.isfile('experiment_3.txt'):  # check file exists
+            with open("experiment_3.txt", 'r') as infile:
+                input_file.insert(tk.END, infile.read())  # read file into text window
+                conversion.main("experiment_3.txt")  # call conversion script
+                open_csv()
+                log_area.insert(tk.END, "[INFO]: \"experiment_3.txt\" converted to csv\n")
+            # log
+            with open("log/log_file.txt", 'a+') as log_file:
+                log_file.write("[INFO] %s : (CONVERSION) \"experiment_3.txt\" converted to csv\n" % timestamp())
+        else:
+            log_area.insert(tk.END, "[ERROR]: \"experiment_3.txt\" could not be found\n")
+            # log
+            with open("log/log_file.txt", 'a+') as log_file:
+                log_file.write("[ERROR] %s : (CONVERSION_ERROR) \"experiment_3.txt\" could not be found\n" % timestamp())
     else:
-        log_area.insert(tk.END, '[ERROR]: no file found - conversion aborted\n')
+        # log
+        with open("log/log_file.txt", 'a+') as log_file:
+            log_file.write("[ERROR] %s : (CONVERSION_ERROR) file not found - conversion aborted\n" % timestamp())
+        log_area.insert(tk.END, '[ERROR]: file not found - conversion aborted\n')
         print('no conversion run')
+    log_area.see(tk.END)
 
 
 ########################################################
@@ -250,7 +271,7 @@ def save_box():
     # messagebox
     if os.path.isfile('csv/output.csv'):
         savebox = tk.messagebox.askyesno(
-            title='Save Log File?',
+            title='Save Experiment File?',
             message='Would you like to save the converted experiment file?'
         )
         if savebox is True:
@@ -265,6 +286,9 @@ def save_box():
         quit_app()
 
     else:
+        # log
+        with open("log/log_file.txt", 'a+') as log_file:
+            log_file.write("[INFO] %s : No converted experiment file found, skipping...\n" % timestamp())
         print('No converted experiment file found, skipping...')
         quit_app()
 
