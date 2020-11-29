@@ -1,16 +1,14 @@
 Convert Button:
-    - Checks what dropdown item is selected
-    - Will read the experiment file into the input file window
-    - Does NOT convert to CSV (yet)
-    - Will NOT be any text in the output file window
+    - Checks what dropdown item is selected (experiment 1-3 implemented)
+    - Will read the experiment file into the input file window from experiments/chosen_file
+    - Converts to csv in csv/output.csv
+    - Reads converted csv file from csv/output.csv into the output file window
 
-File Menu:
+Menu:
     - View Log will read the log file into the log window
-    - Quit works
+    - Quit will ask to save the log file (and csv file if one was generated) before quiting
+	-If yes, these files will be saved with the current data & time appended to the file name 
 
 ISSUES:
-    - No window geometry
-        - Window currently just stretches to accommodate content
-        - No starting position defined
-
-    - Log frame not sticking to east side
+    - Fix graphing function
+    - Implement graph type selection
