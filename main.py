@@ -32,30 +32,36 @@ def create_graph():
             filereader = csv.reader(csvfile, delimiter=',', quotechar='|')
             for row in filereader:
                 row_array.append(row)
-    row_array = np.array(row_array, dtype=object)
-    print([row_array[1][0]])
+        row_array = np.array(row_array, dtype=object)
+        print([row_array[1][0]])
 
-    x = np.array([])
-    y = np.array([])
-    for i in range(1, len(row_array)):
-        # print([row_array[i][1]] + [row_array[i][2]])
-        x = np.append(x, [row_array[i][1]], axis=None)
-        y = np.append(y, [row_array[i][2]], axis=None)
+        x = np.array([])
+        y = np.array([])
+        for i in range(1, len(row_array)):
+            # print([row_array[i][1]] + [row_array[i][2]])
+            x = np.append(x, [row_array[i][1]], axis=None)
+            y = np.append(y, [row_array[i][2]], axis=None)
 
-    # y = np.array([10, 11, 12, 13, 14])
-    ax1.plot(x.astype(float), y.astype(float))
-    ax1.grid()
-    ax1.set_title('Plot 1')
-    ax1.set_xlabel('x')
-    # ticks = ax1.get_xticks() * 2 * 2
-    # ax1.set_xticklabels(ticks)
-    ax1.set_ylabel('y')
+        # y = np.array([10, 11, 12, 13, 14])
+        ax1.plot(x.astype(float), y.astype(float))
+        ax1.grid()
+        ax1.set_title('Plot 1')
+        ax1.set_xlabel('x')
+        # ticks = ax1.get_xticks() * 2 * 2
+        # ax1.set_xticklabels(ticks)
+        ax1.set_ylabel('y')
 
-    canvas1 = FigureCanvasTkAgg(fig1, master=right_frame)
-    canvas1.draw()
-    canvas1.get_tk_widget().grid(column=0, row=2, columnspan=5)
+        canvas1 = FigureCanvasTkAgg(fig1, master=right_frame)
+        canvas1.draw()
+        canvas1.get_tk_widget().grid(column=0, row=2, columnspan=5)
 
-    print('plot complete')
+        print('plot complete')
+
+    else:
+        log_area.insert(tk.END, '[WARN]: \"csv/output.csv\" not found - plot aborted\n')
+        # log
+        with open("log/log_file.txt", 'a+') as log_file:
+            log_file.write("[WARN] %s : \"csv/output.csv\" not found - plot aborted\n" % timestamp())
 
 
 ######################################
@@ -190,6 +196,38 @@ def convert_experiment():
             # log
             with open("log/log_file.txt", 'a+') as log_file:
                 log_file.write("[ERROR] %s : (CONVERSION_ERROR) \"experiment_3.txt\" could not be found\n" % timestamp())
+
+    elif experiment_menu.current() == 4:  # check selected experiment
+        if os.path.isfile('experiments/experiment_4.txt'):  # check file exists
+            with open("experiments/experiment_4.txt", 'r') as infile:
+                input_file.insert(tk.END, infile.read())  # read file into text window
+                conversion.main("experiments/experiment_4.txt")  # call conversion script
+                open_csv()
+                log_area.insert(tk.END, "[INFO]: \"experiment_4.txt\" converted to csv\n")
+            # log
+            with open("log/log_file.txt", 'a+') as log_file:
+                log_file.write("[INFO] %s : (CONVERSION) \"experiment_4.txt\" converted to csv\n" % timestamp())
+        else:
+            log_area.insert(tk.END, "[ERROR]: \"experiment_4.txt\" could not be found\n")
+            # log
+            with open("log/log_file.txt", 'a+') as log_file:
+                log_file.write("[ERROR] %s : (CONVERSION_ERROR) \"experiment_4.txt\" could not be found\n" % timestamp())
+
+    elif experiment_menu.current() == 5:  # check selected experiment
+        if os.path.isfile('experiments/experiment_5.txt'):  # check file exists
+            with open("experiments/experiment_5.txt", 'r') as infile:
+                input_file.insert(tk.END, infile.read())  # read file into text window
+                conversion.main("experiments/experiment_5.txt")  # call conversion script
+                open_csv()
+                log_area.insert(tk.END, "[INFO]: \"experiment_5.txt\" converted to csv\n")
+            # log
+            with open("log/log_file.txt", 'a+') as log_file:
+                log_file.write("[INFO] %s : (CONVERSION) \"experiment_5.txt\" converted to csv\n" % timestamp())
+        else:
+            log_area.insert(tk.END, "[ERROR]: \"experiment_5.txt\" could not be found\n")
+            # log
+            with open("log/log_file.txt", 'a+') as log_file:
+                log_file.write("[ERROR] %s : (CONVERSION_ERROR) \"experiment_5.txt\" could not be found\n" % timestamp())
     else:
         # log
         with open("log/log_file.txt", 'a+') as log_file:
@@ -327,18 +365,18 @@ def widgets():
     # left_frame top widgets
 
     # input experiment file
-    input_label = tk.Label(left_frame, text='Input File Text (.txt)')
+    input_label = tk.Label(left_frame, text='Input File (.txt)')
     input_label.grid(column=0, row=2, sticky='ew')
     global input_file
-    input_file = scrolledtext.ScrolledText(left_frame, wrap=tk.WORD, width=50, height=7,
+    input_file = scrolledtext.ScrolledText(left_frame, wrap=tk.WORD, width=60, height=7,
                                            font='Calibri, 10', bg='black', fg='white')
     input_file.grid(column=1, row=2, padx=10, pady=10, columnspan=2)
 
     # output csv file
-    output_label = tk.Label(left_frame, text='Output File Text (.csv)')
+    output_label = tk.Label(left_frame, text='Output File (.csv)')
     output_label.grid(column=0, row=3, sticky='ew')
     global output_file
-    output_file = scrolledtext.ScrolledText(left_frame, wrap=tk.WORD, width=50, height=7,
+    output_file = scrolledtext.ScrolledText(left_frame, wrap=tk.WORD, width=60, height=7,
                                             font='Calibri, 10', bg='black', fg='white')
     output_file.grid(column=1, row=3, padx=10, pady=10, columnspan=2)
 
@@ -350,7 +388,9 @@ def widgets():
     experiment_menu['values'] = ('Select Experiment:',
                                  'Experiment 1',
                                  'Experiment 2',
-                                 'Experiment 3')
+                                 'Experiment 3',
+                                 'Experiment 4',
+                                 'Experiment 5')
     experiment_button = tk.Button(left_frame, text="Convert", command=convert_experiment)
     experiment_menu.current(0)
 
@@ -365,7 +405,7 @@ def widgets():
     # left_frame bottom widgets
 
     global log_area
-    log_area = scrolledtext.ScrolledText(left_frame1, wrap=tk.WORD, width=50, height=10,
+    log_area = scrolledtext.ScrolledText(left_frame1, wrap=tk.WORD, width=60, height=10,
                                          font=('Calibri', 12), bg='black', fg='white')
     log_label = tk.Label(left_frame1, text='Log output')
 
