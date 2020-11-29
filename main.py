@@ -144,10 +144,10 @@ def convert_experiment():
     input_file.delete(1.0, tk.END)
     output_file.delete(1.0, tk.END)
     if experiment_menu.current() == 1:  # check selected experiment
-        if os.path.isfile('experiment_1.txt'):  # check file exists
-            with open("experiment_1.txt", 'r') as infile:
+        if os.path.isfile('experiments/experiment_1.txt'):  # check file exists
+            with open("experiments/experiment_1.txt", 'r') as infile:
                 input_file.insert(tk.END, infile.read())  # read file into text window
-                conversion.main("experiment_1.txt")  # call conversion script
+                conversion.main("experiments/experiment_1.txt")  # call conversion script
                 open_csv()
                 log_area.insert(tk.END, "[INFO]: \"experiment_1.txt\" converted to csv\n")
             # log
@@ -160,10 +160,10 @@ def convert_experiment():
                 log_file.write("[ERROR] %s : (CONVERSION_ERROR) \"experiment_1.txt\" could not be found\n" % timestamp())
 
     elif experiment_menu.current() == 2:  # check selected experiment
-        if os.path.isfile('experiment_2.txt'):  # check file exists
-            with open("experiment_2.txt", 'r') as infile:
+        if os.path.isfile('experiments/experiment_2.txt'):  # check file exists
+            with open("experiments/experiment_2.txt", 'r') as infile:
                 input_file.insert(tk.END, infile.read())  # read file into text window
-                conversion.main("experiment_2.txt")
+                conversion.main("experiments/experiment_2.txt")
                 open_csv()
                 log_area.insert(tk.END, "[INFO]: \"experiment_2.txt\" converted to csv\n")
             # log
@@ -176,10 +176,10 @@ def convert_experiment():
                 log_file.write("[ERROR] %s : (CONVERSION_ERROR) \"experiment_2.txt\" could not be found\n" % timestamp())
 
     elif experiment_menu.current() == 3:  # check selected experiment
-        if os.path.isfile('experiment_3.txt'):  # check file exists
-            with open("experiment_3.txt", 'r') as infile:
+        if os.path.isfile('experiments/experiment_3.txt'):  # check file exists
+            with open("experiments/experiment_3.txt", 'r') as infile:
                 input_file.insert(tk.END, infile.read())  # read file into text window
-                conversion.main("experiment_3.txt")  # call conversion script
+                conversion.main("experiments/experiment_3.txt")  # call conversion script
                 open_csv()
                 log_area.insert(tk.END, "[INFO]: \"experiment_3.txt\" converted to csv\n")
             # log
