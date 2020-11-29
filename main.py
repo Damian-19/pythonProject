@@ -302,7 +302,6 @@ def window_geometry():
     # root.geometry("{0}x{1}+0+0".format(root.winfo_screenwidth(), root.winfo_screenheight()))
 
 
-
 def confirm_quit():
     print('confirm quit')
     confirm_quit = tk.messagebox.askyesno(
@@ -314,6 +313,7 @@ def confirm_quit():
     else:
         log_area.insert(tk.END, '[INFO]: program quit aborted\n')
         log_area.see(tk.END)
+
 
 ##########################################################
 # function to ask user to save the current log file
