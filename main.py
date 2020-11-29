@@ -1,7 +1,6 @@
 import csv
 import time
 import os
-import sys
 import os.path
 import tkinter as tk
 from tkinter import ttk
@@ -11,10 +10,9 @@ import numpy as np
 
 import matplotlib.pyplot as plt
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg  # , NavigationToolbar2Tk)
-
-# global declarations
 import conversion
 
+# global declarations
 global log_area, input_file, output_file, experiment_menu, right_frame, graph_select
 
 
@@ -304,11 +302,11 @@ def window_geometry():
 
 def confirm_quit():
     print('confirm quit')
-    confirm_quit = tk.messagebox.askyesno(
+    confirm_quit_box = tk.messagebox.askyesno(
         title='Quit?',
         message='Are you sure you want to quit?'
     )
-    if confirm_quit is True:
+    if confirm_quit_box is True:
         save_log()
     else:
         log_area.insert(tk.END, '[INFO]: program quit aborted\n')
@@ -369,6 +367,7 @@ def save_box():
 
 ##################################################
 # called to create all widgets in the GUI
+# large function - ends line 495
 ##################################################
 def widgets():
     # menu
@@ -510,6 +509,7 @@ if __name__ == '__main__':
     main()
     log_area.insert(tk.END, "[INFO]: window created.\n")
     root.mainloop()
+    # unless otherwise chosen, remove generated log and experiment files
     if os.path.isfile('log/log_file.txt'):
         os.remove('log/log_file.txt')
     if os.path.isfile('csv/output.csv'):
