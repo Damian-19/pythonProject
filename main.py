@@ -546,7 +546,7 @@ def widgets():
     save_label.grid(column=0, row=3, padx=10, pady=10, sticky='ew')
 
     global save_text
-    save_text = tk.Text(right_frame, width=20, height=1)
+    save_text = tk.Text(right_frame, width=20, height=1, font='Calibri, 10')
     save_text.grid(column=1, row=3, padx=10, pady=10, sticky='ew')
 
     save_button = tk.Button(right_frame, text='Save Graph', command=save_graph)
