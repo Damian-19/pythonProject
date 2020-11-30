@@ -13,17 +13,20 @@ from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg  # , NavigationT
 import conversion
 
 # global declarations
-global log_area, input_file, output_file, experiment_menu, right_frame, graph_select
+global log_area, input_file, output_file, experiment_menu, right_frame, graph_select, row_array, ax1, fig1, save_text, plot_flag
+plot_flag = 0
 
 
 #######################################
 # graphing function
+# ends line 88
 #######################################
 def create_graph():
     print('plotting')
+
+    global row_array, ax1, fig1
     fig1 = plt.Figure(figsize=(5, 4), dpi=100)
     ax1 = fig1.add_subplot(111)
-
     row_array = []
     if os.path.isfile('csv/output.csv'):
         with open('csv/output.csv', newline='') as csvfile:
@@ -35,27 +38,76 @@ def create_graph():
 
         x = np.array([])
         y = np.array([])
-        for i in range(1, len(row_array)):
+        global plot_flag
+        plot_flag = 0
+        if graph_select.current() == 0:
+            log_area.insert(tk.END, '[WARN]: no graph type selected - graph aborted\n')
+            # log
+            with open("log/log_file.txt", 'a+') as log_file:
+                log_file.write("[WARN] %s : no graph type selected - graph function stopped\n" % timestamp())
+            log_area.see(tk.END)
+            print('graph aborted - function stopped')
+            return
+        elif graph_select.current() == 1:
             # print([row_array[i][1]] + [row_array[i][2]])
-            x = np.append(x, [row_array[i][1]], axis=None)
-            # y = np.append(y, [row_array[i][2]], axis=None)
+            for i in range(1, len(row_array)):
+                x = np.append(x, [row_array[i][1]], axis=None)
+            ax1.set_title('Accelerometer X')
+            ax1.set_ylabel('Accelerometer Value')
+        elif graph_select.current() == 2:
+            for i in range(1, len(row_array)):
+                x = np.append(x, [row_array[i][2]], axis=None)
+            ax1.set_title('Accelerometer Y')
+            ax1.set_ylabel('Accelerometer Value')
+        elif graph_select.current() == 3:
+            for i in range(1, len(row_array)):
+                x = np.append(x, [row_array[i][3]], axis=None)
+            ax1.set_title('Accelerometer Z')
+            ax1.set_ylabel('Accelerometer Value')
+        elif graph_select.current() == 4:
+            for i in range(1, len(row_array)):
+                x = np.append(x, [row_array[i][4]], axis=None)
+            ax1.set_title('Temperature')
+            ax1.set_ylabel('Temperature')
+        elif graph_select.current() == 5:
+            for i in range(1, len(row_array)):
+                x = np.append(x, [row_array[i][5]], axis=None)
+            ax1.set_title('Gyroscope X')
+            ax1.set_ylabel('Gyroscope Value')
+        elif graph_select.current() == 6:
+            for i in range(1, len(row_array)):
+                x = np.append(x, [row_array[i][6]], axis=None)
+            ax1.set_title('Gyroscope Y')
+            ax1.set_ylabel('Gyroscope Value')
+        elif graph_select.current() == 7:
+            for i in range(1, len(row_array)):
+                x = np.append(x, [row_array[i][7]], axis=None)
+            ax1.set_title('Gyroscope Z')
+            ax1.set_ylabel('Gyroscope')
+        elif graph_select.current() == 8:
+            for i in range(1, len(row_array)):
+                x = np.append(x, [row_array[i][8]], axis=None)
+            ax1.set_title('Angle/Pitch')
+            ax1.set_ylabel('Angle/Pitch Value')
+        elif graph_select.current() == 9:
+            for i in range(1, len(row_array)):
+                x = np.append(x, [row_array[i][9]], axis=None)
+            ax1.set_title('Roll')
+            ax1.set_ylabel('Roll Value')
 
         for i in range(1, len(row_array)):
             y = np.append(y, [i], axis=None)
-        # y = np.array([10, 11, 12, 13, 14])
+
         ax1.plot(y.astype(float), x.astype(float))
         ax1.grid()
-        ax1.set_title('Plot 1')
         ax1.set_xlabel('x')
-        # ticks = ax1.get_xticks() * 2 * 2
-        # ax1.set_xticklabels(ticks)
-        ax1.set_ylabel('y')
-
+        fig1.tight_layout()
         canvas1 = FigureCanvasTkAgg(fig1, master=right_frame)
         canvas1.draw()
         canvas1.get_tk_widget().grid(column=0, row=2, columnspan=5)
+        plot_flag = 1
 
-        print('plot complete')
+        print('plot complete - creating log entry')
 
     else:
         log_area.insert(tk.END, '[WARN]: \"csv/output.csv\" not found - plot aborted\n')
@@ -144,11 +196,23 @@ def plot_graphs():
 ############################################
 def save_graph():
     print('saving')
-    if graph_select.current() != 0:
-        log_area.insert(tk.END, '[INFO]: graph saved\n')
-        # log
-        with open("log/log_file.txt", 'a+') as log_file:
-            log_file.write("[INFO] %s : graph saved\n" % timestamp())
+    global save_text, fig1
+    if plot_flag != 0:
+        if save_text.compare("end-1c", "!=", "1.0"): # check text area is not empty
+            input = save_text.get("1.0", 'end-1c')
+            fig1.savefig(input)
+            print(input)
+            log_area.insert(tk.END, '[INFO]: graph saved\n')
+            save_text.delete(1.0, tk.END)
+            # log
+            with open("log/log_file.txt", 'a+') as log_file:
+                log_file.write("[INFO] %s : graph saved as %s\n" % (timestamp(), input))
+            log_area.see(tk.END)
+        else:
+            log_area.insert(tk.END, '[WARN]: please enter a filename\n')
+            log_area.see(tk.END)
+    else:
+        log_area.insert(tk.END, '[WARN]: plot a graph before saving\n')
         log_area.see(tk.END)
 
 
@@ -452,17 +516,6 @@ def widgets():
     # right_frame widgets
 
     # graph
-    """fig = plt.figure(figsize=(5, 5))
-    canvas = FigureCanvasTkAgg(fig, master=right_frame)
-    canvas.draw()
-    canvas.get_tk_widget().grid(column=0, row=1, padx=10, pady=10, columnspan=4)
-
-    toolbar_frame = tk.Frame(master=right_frame)
-    toolbar_frame.grid(column=0, row=2, columnspan=4)
-    toolbar = NavigationToolbar2Tk(canvas, toolbar_frame)"""
-
-    # placeholder = tk.Text(right_frame, width=70, height=30)
-    # placeholder.grid(column=0, row=2, columnspan=5, padx=5, pady=5)
     graph_label = tk.Label(right_frame, text='Select Graph')
     graph_label.grid(column=0, row=0, padx=10, pady=10, sticky='ew')
 
@@ -471,22 +524,42 @@ def widgets():
     global graph_select
     graph_select = ttk.Combobox(right_frame, textvariable=value2)
     graph_select['values'] = ('Select Graph Type:',
-                              'Type 1',
-                              'Type 2',
-                              'Type 3')
+                              'Accelerometer X',
+                              'Accelerometer Y',
+                              'Accelerometer Z',
+                              'Temperature',
+                              'Gyroscope X',
+                              'Gyroscope Y',
+                              'Gyroscope Z',
+                              'Angle/Pitch',
+                              'Roll')
     graph_select.current(0)
     graph_select.grid(column=1, row=0, padx=10, pady=10, sticky='ew')
 
     graph_button = tk.Button(right_frame, text='Plot Graph', command=create_graph)
     graph_button.grid(column=2, row=0, padx=10, pady=10, sticky='ew')
 
-    save_button = tk.Button(right_frame, text='Save Graph', command=save_graph)
-    save_button.grid(column=3, row=0, padx=10, pady=10, sticky='ew')
-
     clear_button = tk.Button(right_frame, text='Clear Graph', command=clear_graph)
-    clear_button.grid(column=4, row=0, padx=10, pady=10, sticky='ew')
+    clear_button.grid(column=3, row=0, padx=10, pady=10, sticky='ew')
+
+    save_label = tk.Label(right_frame, text='Enter Filename to save as:')
+    save_label.grid(column=0, row=3, padx=10, pady=10, sticky='ew')
+
+    global save_text
+    save_text = tk.Text(right_frame, width=20, height=1)
+    save_text.grid(column=1, row=3, padx=10, pady=10, sticky='ew')
+
+    save_button = tk.Button(right_frame, text='Save Graph', command=save_graph)
+    save_button.grid(column=2, row=3, padx=10, pady=10, sticky='ew')
 
     ttk.Separator(right_frame, orient='horizontal').grid(column=0, row=1, columnspan=5, padx=5, pady=5, sticky='ew')
+
+    global row_array, ax1, fig1
+    fig1 = plt.Figure(figsize=(5, 4), dpi=100)
+    ax1 = fig1.add_subplot(111)
+    canvas1 = FigureCanvasTkAgg(fig1, master=right_frame)
+    canvas1.draw()
+    canvas1.get_tk_widget().grid(column=0, row=2, columnspan=5)
 
     # log
     with open("log/log_file.txt", 'a+') as log_file:

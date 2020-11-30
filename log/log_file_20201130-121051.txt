@@ -1,0 +1,4 @@
+[INFO] 11/30/20 12:10:44 : widgets created
+[INFO] 11/30/20 12:10:44 : window created.
+[INFO] 11/30/20 12:10:46 : (CONVERSION) "experiment_1.txt" converted to csv
+[WARN] 11/30/20 12:10:46 : no graph type selected - graph function stopped
