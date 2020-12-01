@@ -5,12 +5,16 @@ import os.path
 import tkinter as tk
 from tkinter import ttk
 from tkinter import scrolledtext
+from PIL import Image
+from PIL import ImageTk
 
 import numpy as np
 
 import matplotlib.pyplot as plt
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg  # , NavigationToolbar2Tk)
+
 import conversion
+import splashscreen
 
 # global declarations
 global log_area, input_file, output_file, experiment_menu, right_frame, graph_select, row_array, ax1, fig1, save_text, plot_flag
@@ -100,7 +104,7 @@ def create_graph():
 
         ax1.plot(y.astype(float), x.astype(float))
         ax1.grid()
-        ax1.set_xlabel('x')
+        ax1.set_xlabel('Sensor Value (1-240)')
         fig1.tight_layout()
         canvas1 = FigureCanvasTkAgg(fig1, master=right_frame)
         canvas1.draw()
@@ -198,7 +202,7 @@ def save_graph():
     print('saving')
     global save_text, fig1
     if plot_flag != 0:
-        if save_text.compare("end-1c", "!=", "1.0"): # check text area is not empty
+        if save_text.compare("end-1c", "!=", "1.0"):  # check text area is not empty
             input = save_text.get("1.0", 'end-1c')
             fig1.savefig(input)
             print(input)
@@ -338,30 +342,15 @@ def open_log():
 # determines window size & position on screen
 ########################################################
 def window_geometry():
-    # window geometry
-    """screen_height = root.winfo_screenheight()
-    screen_width = root.winfo_screenwidth()
-    window_width = int(910)
-    window_height = int(570)
-    window_x_pos = int(screen_width / 8)
-    window_y_pos = int(screen_height / 20)
-
-    print("screen height: " + str(screen_height))
-    print("screen width: " + str(screen_width))
-    print("window height: " + str(window_height))
-    print("window width: " + str(window_width))
-    root_geometry = str(window_width) + 'x' + str(window_height) + \
-        '+' + str(window_x_pos) + '+' + str(window_y_pos)
-    root.geometry(root_geometry)"""
-    w = root.winfo_reqwidth()
-    h = root.winfo_reqheight()
-    ws = root.winfo_screenwidth()
-    hs = root.winfo_screenheight()
-    x = (ws / 8) - (w / 8)
-    y = (hs / 8) - (h / 8)
-    root.geometry('+%d+%d' % (x, y))
-    # fullscreen
-    # root.geometry("{0}x{1}+0+0".format(root.winfo_screenwidth(), root.winfo_screenheight()))
+    w = root.winfo_screenwidth()
+    h = root.winfo_screenheight()
+    min_width = 1140
+    min_height = 570
+    x = w / 2 - min_width / 2
+    y = h / 2 - min_height / 2
+    root.geometry('%dx%d+%d+%d' % (min_width, min_height, x, y))
+    root.minsize(width=min_width, height=min_height)
+    # root.maxsize(width=600, height=600)
 
 
 def confirm_quit():
@@ -566,8 +555,45 @@ def widgets():
         log_file.write("[INFO] %s : widgets created\n" % timestamp())
 
 
+def splash_window():
+    w = root.winfo_screenwidth()
+    h = root.winfo_screenheight()
+    width = 600
+    height = 400
+    x = w / 2 - width / 2
+    y = h / 2 - height / 2
+
+    splash.geometry('%dx%d+%d+%d' % (width, height, x, y))
+    splash.overrideredirect(1)
+    splash.configure(bg='#cf1111', highlightbackground="#cf1111", highlightthickness=2)
+    splash.columnconfigure(0, weight=1)
+    splash.columnconfigure(1, weight=1)
+    splash.columnconfigure(2, weight=1)
+    # cf1111
+
+    # label1 = tk.Label(splash, text='Experiment Dashboard', font='calibri 20', bg='#cf1111', fg='black')
+
+    image = Image.open('Logo.png')
+    image1 = image.resize((130, 130), resample=0)
+    logo = ImageTk.PhotoImage(image1)
+    label1 = tk.Label(splash, image=logo, bg='#cf1111', anchor='center')
+    label1.image = logo
+    label1.grid(column=1, row=0, padx=10, pady=10, sticky='nsew')
+
+
+
+    image = Image.open('bar-chart.png')
+    # Icon "bar-chart.png" made by srip from www.flaticon.com
+    image1 = image.resize((220, 220), resample=0)
+    logo = ImageTk.PhotoImage(image1)
+    label2 = tk.Label(splash, image=logo, bg='#cf1111', anchor='center')
+    label2.image = logo
+
+    label2.grid(column=1, row=1, padx=10, pady=10, sticky='nsew')
+
+
 def main():
-    root.title('Project')
+    root.title('Experiment Dashboard')
     root.resizable(width=False, height=False)
     root.config(bg='grey')
     window_geometry()
@@ -579,9 +605,15 @@ def main():
 if __name__ == '__main__':
     print('start\n')
     root = tk.Tk()
+    splash = tk.Toplevel()
+    splash.attributes('-topmost', True)
+    splash_window()
+    splash.after(3000, splash.destroy)
     main()
     log_area.insert(tk.END, "[INFO]: window created.\n")
+    time.sleep(2.5)
     root.mainloop()
+
     # unless otherwise chosen, remove generated log and experiment files
     if os.path.isfile('log/log_file.txt'):
         os.remove('log/log_file.txt')
