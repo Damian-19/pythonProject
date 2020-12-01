@@ -574,7 +574,7 @@ def splash_window():
     # label1 = tk.Label(splash, text='Experiment Dashboard', font='calibri 20', bg='#cf1111', fg='black')
 
     image = Image.open('Logo.png')
-    image1 = image.resize((130, 130), resample=0)
+    image1 = image.resize((180, 180), resample=0)
     logo = ImageTk.PhotoImage(image1)
     label1 = tk.Label(splash, image=logo, bg='#cf1111', anchor='center')
     label1.image = logo
