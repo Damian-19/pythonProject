@@ -204,9 +204,9 @@ def save_graph():
     if plot_flag != 0:
         if save_text.compare("end-1c", "!=", "1.0"):  # check text area is not empty
             input = save_text.get("1.0", 'end-1c')
-            fig1.savefig(input)
+            fig1.savefig('img/%s' % input)
             print(input)
-            log_area.insert(tk.END, '[INFO]: graph saved\n')
+            log_area.insert(tk.END, '[INFO]: graph saved to \"img/%s\"\n' % input)
             save_text.delete(1.0, tk.END)
             # log
             with open("log/log_file.txt", 'a+') as log_file:
@@ -578,7 +578,7 @@ def splash_window():
     logo = ImageTk.PhotoImage(image1)
     label1 = tk.Label(splash, image=logo, bg='#cf1111', anchor='center')
     label1.image = logo
-    label1.grid(column=1, row=0, padx=10, pady=10, sticky='nsew')
+    label1.grid(column=1, row=0, sticky='nsew')
 
 
 
@@ -589,7 +589,7 @@ def splash_window():
     label2 = tk.Label(splash, image=logo, bg='#cf1111', anchor='center')
     label2.image = logo
 
-    label2.grid(column=1, row=1, padx=10, pady=10, sticky='nsew')
+    label2.grid(column=1, row=1, sticky='nsew')
 
 
 def main():
