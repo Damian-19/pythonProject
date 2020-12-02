@@ -265,7 +265,7 @@ def convert_experiment():
         if os.path.isfile('experiments/experiment_1.txt'):  # check file exists
             with open("experiments/experiment_1.txt", 'r') as infile:
                 input_file.insert(tk.END, infile.read())  # read file into text window
-                conversion.main("experiments/experiment_1.txt")  # call conversion script
+                conversion.convert("experiments/experiment_1.txt")  # call conversion script
                 open_csv()
                 log_area.insert(tk.END, "[INFO]: \"experiment_1.txt\" converted to csv\n")
             # log
@@ -283,7 +283,7 @@ def convert_experiment():
         if os.path.isfile('experiments/experiment_2.txt'):  # check file exists
             with open("experiments/experiment_2.txt", 'r') as infile:
                 input_file.insert(tk.END, infile.read())  # read file into text window
-                conversion.main("experiments/experiment_2.txt")
+                conversion.convert("experiments/experiment_2.txt")
                 open_csv()
                 log_area.insert(tk.END, "[INFO]: \"experiment_2.txt\" converted to csv\n")
             # log
@@ -301,7 +301,7 @@ def convert_experiment():
         if os.path.isfile('experiments/experiment_3.txt'):  # check file exists
             with open("experiments/experiment_3.txt", 'r') as infile:
                 input_file.insert(tk.END, infile.read())  # read file into text window
-                conversion.main("experiments/experiment_3.txt")  # call conversion script
+                conversion.convert("experiments/experiment_3.txt")  # call conversion script
                 open_csv()
                 log_area.insert(tk.END, "[INFO]: \"experiment_3.txt\" converted to csv\n")
             # log
@@ -319,7 +319,7 @@ def convert_experiment():
         if os.path.isfile('experiments/experiment_4.txt'):  # check file exists
             with open("experiments/experiment_4.txt", 'r') as infile:
                 input_file.insert(tk.END, infile.read())  # read file into text window
-                conversion.main("experiments/experiment_4.txt")  # call conversion script
+                conversion.convert("experiments/experiment_4.txt")  # call conversion script
                 open_csv()
                 log_area.insert(tk.END, "[INFO]: \"experiment_4.txt\" converted to csv\n")
             # log
@@ -337,7 +337,7 @@ def convert_experiment():
         if os.path.isfile('experiments/experiment_5.txt'):  # check file exists
             with open("experiments/experiment_5.txt", 'r') as infile:
                 input_file.insert(tk.END, infile.read())  # read file into text window
-                conversion.main("experiments/experiment_5.txt")  # call conversion script
+                conversion.convert("experiments/experiment_5.txt")  # call conversion script
                 open_csv()
                 log_area.insert(tk.END, "[INFO]: \"experiment_5.txt\" converted to csv\n")
             # log
