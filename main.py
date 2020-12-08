@@ -641,7 +641,7 @@ def splash_window():
     splash.columnconfigure(2, weight=1)
 
     # add "Logo.png"
-    image = Image.open('Logo.png')
+    image = Image.open('resource/Logo.png')
     image1 = image.resize((180, 180), resample=0)
     logo = ImageTk.PhotoImage(image1)
     label1 = tk.Label(splash, image=logo, bg='#cf1111', anchor='center')
@@ -649,7 +649,7 @@ def splash_window():
     label1.grid(column=1, row=0, sticky='nsew')
 
     # add "bar-chart.png"
-    image = Image.open('bar-chart.png')  # Image "bar-chart.png" made by srip from www.flaticon.com
+    image = Image.open('resource/bar-chart.png')  # Image "bar-chart.png" made by srip from www.flaticon.com
     image1 = image.resize((220, 220), resample=0)
     logo = ImageTk.PhotoImage(image1)
     label2 = tk.Label(splash, image=logo, bg='#cf1111', anchor='center')
