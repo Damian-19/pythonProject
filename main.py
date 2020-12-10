@@ -127,6 +127,10 @@ def create_graph():
         plot_flag = 1
 
         print('plot complete - creating log entry')
+        log_area.insert(tk.END, '[INFO]: Graph plotted successfully\n')
+        # log
+        with open("log/log_file.txt", 'a+') as log_file:
+            log_file.write("[INFO] %s : Graph plotted successfully\n" % timestamp())
 
     else:
         log_area.insert(tk.END, '[WARN]: \"csv/output.csv\" not found - plot aborted\n')

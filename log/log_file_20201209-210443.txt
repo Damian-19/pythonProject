@@ -1,0 +1,4 @@
+[INFO] 12/09/20 20:48:08 : widgets created
+[INFO] 12/09/20 20:48:08 : window created.
+[INFO] 12/09/20 20:58:36 : (CONVERSION) "experiment_3.txt" converted to csv
+[INFO] 12/09/20 20:58:38 : Graph plotted successfully
